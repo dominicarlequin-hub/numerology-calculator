@@ -19,7 +19,8 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Fool", number:"0", symbol:"🜁", meaning:"Pure potential before manifestation. The soul at the threshold of existence — unformed, fearless, infinite." },
       { name:"The Magician", number:"I", symbol:"☿", meaning:"The will to begin. Divine power channeled through focused intention into the world of form." },
-    ]
+    ],
+    court:null
   },
   {
     id:2, name:"Chokmah", title:"Wisdom", num:2, x:320, y:110, color:"#c9a96e",
@@ -27,7 +28,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Star", number:"XVII", symbol:"✦", meaning:"Inspiration pouring from the heavens. Hope, cosmic guidance, the light that orients the wandering soul." },
       { name:"The Emperor", number:"IV", symbol:"♂", meaning:"Structure born from wisdom. The archetype of divine masculine authority and ordered creation." },
-    ]
+    ],
+    court:{
+      element:"Fire · The Father Force",
+      rw:[
+        {rank:"King of Wands",symbol:"🔥",meaning:"Commanding visionary. Leads with charisma and fierce creative authority. The solar patriarch who inspires through sheer force of will."},
+        {rank:"King of Swords",symbol:"🜁",meaning:"Masterful intellect. Cuts to truth without hesitation. The mind at its most sovereign — precise, just, unyielding."},
+        {rank:"King of Cups",symbol:"🜄",meaning:"Emotionally wise ruler. Governs feeling with deep compassion and steady grace."},
+        {rank:"King of Pentacles",symbol:"🜃",meaning:"Abundant provider. The patriarch of material mastery — steady, generous, rooted in earth."}
+      ],
+      thoth:[
+        {rank:"Knight of Wands",symbol:"🔥",meaning:"In Thoth, the Knight is King. Fierce solar warrior — pure directed will incarnate."},
+        {rank:"Knight of Swords",symbol:"🜁",meaning:"The intellect at war. Swift, incisive, a blade of pure thought cutting through illusion."},
+        {rank:"Knight of Cups",symbol:"🜄",meaning:"The romantic seeker. Rides into emotion with abandon — visionary, dreamy, sometimes self-deceiving."},
+        {rank:"Knight of Disks",symbol:"🜃",meaning:"Slow but unstoppable. Patient material force that builds empires through relentless effort."}
+      ]
+    }
   },
   {
     id:3, name:"Binah", title:"Understanding", num:3, x:80, y:110, color:"#9b87c8",
@@ -35,7 +51,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The High Priestess", number:"II", symbol:"☽", meaning:"The veil between worlds. Deep intuition, mystery, the wisdom that cannot be spoken — only felt." },
       { name:"The Empress", number:"III", symbol:"♀", meaning:"Sacred feminine abundance. Life-giver, nurturer, the intelligence of the natural world made divine." },
-    ]
+    ],
+    court:{
+      element:"Water · The Mother Force",
+      rw:[
+        {rank:"Queen of Wands",symbol:"🔥",meaning:"Magnetic and radiant. She commands attention without demanding it — creative power expressed through warmth."},
+        {rank:"Queen of Swords",symbol:"🜁",meaning:"Clarity without cruelty. She has known loss and transmuted it into razor-sharp perception and honest compassion."},
+        {rank:"Queen of Cups",symbol:"🜄",meaning:"The emotional oracle. Deeply intuitive, nurturing, she reads the unspoken currents beneath every surface."},
+        {rank:"Queen of Pentacles",symbol:"🜃",meaning:"The abundant mother. Grounded, sensual, generous — she creates sanctuaries of beauty and security."}
+      ],
+      thoth:[
+        {rank:"Queen of Wands",symbol:"🔥",meaning:"Adaptable fire queen. She holds contradictions — fierce and gentle, independent yet deeply connected."},
+        {rank:"Queen of Swords",symbol:"🜁",meaning:"The widow. She has grieved and emerged crystalline. Her understanding comes from having endured."},
+        {rank:"Queen of Cups",symbol:"🜄",meaning:"The dreamer enthroned. She rules the waters of the unconscious — reflective, mysterious, powerfully receptive."},
+        {rank:"Queen of Disks",symbol:"🜃",meaning:"The alchemist of earth. She transforms raw matter into nourishment, beauty, and sanctuary."}
+      ]
+    }
   },
   {
     id:4, name:"Chesed", title:"Mercy", num:4, x:320, y:210, color:"#6ea8c9",
@@ -43,7 +74,8 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Wheel of Fortune", number:"X", symbol:"🜂", meaning:"Cycles of fate turning. What rises must fall — and what falls shall rise. Trust the turning." },
       { name:"The Hierophant", number:"V", symbol:"⛪", meaning:"Sacred tradition and spiritual law. The keeper of esoteric wisdom passed through lineage." },
-    ]
+    ],
+    court:null
   },
   {
     id:5, name:"Geburah", title:"Strength", num:5, x:80, y:210, color:"#c96e6e",
@@ -51,7 +83,8 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Tower", number:"XVI", symbol:"⚡", meaning:"Sudden destruction of false structures. The lightning bolt that liberates by shattering illusion." },
       { name:"Strength", number:"VIII", symbol:"♾", meaning:"Power tamed by love. The roar of the lion silenced not by force but by inner mastery." },
-    ]
+    ],
+    court:null
   },
   {
     id:6, name:"Tiphareth", title:"Beauty", num:6, x:200, y:280, color:"#f5d060",
@@ -59,7 +92,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Sun", number:"XIX", symbol:"☀", meaning:"Radiant clarity. Joy without condition. The self revealed in its fullest, most luminous expression." },
       { name:"The Lovers", number:"VI", symbol:"♡", meaning:"Sacred union. The choice between paths, and the love that makes the soul whole." },
-    ]
+    ],
+    court:{
+      element:"Spirit · The Hero & Sacrificed Self",
+      rw:[
+        {rank:"Knight of Wands",symbol:"🔥",meaning:"The questing hero. Bold, adventurous, driven by sacred purpose — a solar champion riding toward destiny."},
+        {rank:"Knight of Swords",symbol:"🜁",meaning:"Pure mental force in motion. Charges into battle armed with truth and conviction, heedless of consequence."},
+        {rank:"Knight of Cups",symbol:"🜄",meaning:"The romantic idealist. He carries the grail and rides toward love, beauty, and spiritual union."},
+        {rank:"Knight of Pentacles",symbol:"🜃",meaning:"Steady steward of the material. Slow, methodical, completely reliable — the knight who always delivers."}
+      ],
+      thoth:[
+        {rank:"Prince of Wands",symbol:"🔥",meaning:"Swift creative intelligence. The idea as a force of nature — brilliant, impulsive, transformative."},
+        {rank:"Prince of Swords",symbol:"🜁",meaning:"The mind unbound. Pure thought in flight — visionary and destructive in equal measure."},
+        {rank:"Prince of Cups",symbol:"🜄",meaning:"The subtle magician. He conceals depth beneath stillness — an artist of inner worlds and hidden currents."},
+        {rank:"Prince of Disks",symbol:"🜃",meaning:"The industrious builder. Methodical intelligence applied to the material — patient, competent, enduring."}
+      ]
+    }
   },
   {
     id:7, name:"Netzach", title:"Victory", num:7, x:320, y:360, color:"#6ec97a",
@@ -67,7 +115,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Empress", number:"III", symbol:"♀", meaning:"The living pulse of nature. Desire as a divine current — creative, fertile, unstoppable." },
       { name:"The Chariot", number:"VII", symbol:"🜄", meaning:"Victory through directed will. Emotion harnessed and driven forward with fierce intention." },
-    ]
+    ],
+    court:{
+      element:"Venus · Desire & Natural Beauty",
+      rw:[
+        {rank:"Queen of Wands",symbol:"🔥",meaning:"She rules Netzach's fire. Confident, sensual, magnetic — the woman who knows her power and wears it lightly."},
+        {rank:"2 of Cups",symbol:"🜄",meaning:"Love in its first recognition. Two souls meeting in mutual resonance — the beginning of sacred union."},
+        {rank:"7 of Cups",symbol:"☁",meaning:"Fantasy and illusion. Desire without direction — the mind lost in its own beautiful creations."},
+        {rank:"10 of Cups",symbol:"🌈",meaning:"Emotional completion. The family, the home, the life fully lived — the victory of the heart achieved."}
+      ],
+      thoth:[
+        {rank:"Queen of Wands",symbol:"🔥",meaning:"Venus in full expression. She magnetizes what she desires effortlessly, her power rooted in absolute self-knowing."},
+        {rank:"Lust",symbol:"♌",meaning:"Trump XI. Raw creative desire as spiritual force — the divine feminine riding the beast of primal nature."},
+        {rank:"Lord of Illusionary Success",symbol:"☁",meaning:"7 of Cups. Netzach in Water — seduction by fantasy. Mistaking beautiful visions for reality."},
+        {rank:"Lord of Victory",symbol:"🜄",meaning:"7 of Cups upright. Real victory emerges when desire is purified into clear, conscious intention."}
+      ]
+    }
   },
   {
     id:8, name:"Hod", title:"Splendour", num:8, x:80, y:360, color:"#c9a96e",
@@ -75,7 +138,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Hermit", number:"IX", symbol:"🕯", meaning:"The lantern in the dark. Wisdom carried inward, knowledge sought in sacred solitude." },
       { name:"Justice", number:"XI", symbol:"⚖", meaning:"Cosmic law made visible. The precise intelligence that weighs all things with perfect clarity." },
-    ]
+    ],
+    court:{
+      element:"Mercury · Language & Magic",
+      rw:[
+        {rank:"King of Swords",symbol:"🜁",meaning:"Hod's ruling court. Pure intellect on the throne — the mind as ultimate authority, ruling with clarity and precision."},
+        {rank:"8 of Swords",symbol:"⛓",meaning:"Interference. The mind trapped in its own constructs — bound not by chains but by belief in limitation."},
+        {rank:"8 of Pentacles",symbol:"⚙",meaning:"Craft mastered through repetition. The artisan at work — skill built one patient stroke at a time."},
+        {rank:"8 of Wands",symbol:"⚡",meaning:"Swift communication. Messages, movement, information traveling at the speed of thought."}
+      ],
+      thoth:[
+        {rank:"Knight of Swords",symbol:"🜁",meaning:"Mercury's warrior. The magician-mind on the attack — brilliant, fast, cutting through confusion with terrifying precision."},
+        {rank:"Lord of Interference",symbol:"⛓",meaning:"8 of Swords. Hod in Air — the intellect become its own prison. Self-limitation disguised as reason."},
+        {rank:"Lord of Prudence",symbol:"⚙",meaning:"8 of Disks. The craftsman in Hod — magical skill applied to material reality with Mercurial precision."},
+        {rank:"Lord of Swiftness",symbol:"⚡",meaning:"8 of Wands. Communication as pure force — the Word, the spell, the command that moves reality."}
+      ]
+    }
   },
   {
     id:9, name:"Yesod", title:"Foundation", num:9, x:200, y:430, color:"#a0c4f5",
@@ -83,7 +161,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The Moon", number:"XVIII", symbol:"☾", meaning:"The realm of illusion and dream. The unconscious speaks in symbols — learn to read its language." },
       { name:"The High Priestess", number:"II", symbol:"☽", meaning:"The silver thread between worlds. She holds the scroll of hidden knowledge — patient, knowing, still." },
-    ]
+    ],
+    court:{
+      element:"Moon · The Astral Plane",
+      rw:[
+        {rank:"Page of Cups",symbol:"🜄",meaning:"The dreamer awakening. Psychic impressions, creative visions, messages from the deep arriving at the threshold of consciousness."},
+        {rank:"Page of Swords",symbol:"🜁",meaning:"Vigilant intelligence. The young mind watchful and alert — ideas forming in the astral mind."},
+        {rank:"Page of Wands",symbol:"🔥",meaning:"Enthusiastic new fire. Creative impulse in its earliest, most magical form — before it meets the resistance of the world."},
+        {rank:"Page of Pentacles",symbol:"🜃",meaning:"The student of earth. Practical potential crystallizing — new skills, the first steps of material mastery."}
+      ],
+      thoth:[
+        {rank:"Princess of Cups",symbol:"🜄",meaning:"The lotus-bearer. She sits at the threshold of the astral — receptive, visionary, channeling images from the deep."},
+        {rank:"Princess of Swords",symbol:"🜁",meaning:"The storm-dancer. She wields ideas before they have form — electric, disruptive, clearing stale air with sudden wind."},
+        {rank:"Princess of Wands",symbol:"🔥",meaning:"The wild flame. Creative force in its most untamed expression — pure inspiration before discipline shapes it."},
+        {rank:"Princess of Disks",symbol:"🜃",meaning:"The pregnant earth. She holds potential within stillness — the seed before germination, matter awaiting its call to form."}
+      ]
+    }
   },
   {
     id:10, name:"Malkuth", title:"The Kingdom", num:10, x:200, y:520, color:"#a08060",
@@ -91,7 +184,22 @@ const SEPHIROTH = [
     tarot:[
       { name:"The World", number:"XXI", symbol:"🜃", meaning:"Completion. The soul having journeyed the full Tree, now standing whole in the world of matter." },
       { name:"The Universe", number:"XXI", symbol:"∞", meaning:"Total integration. All paths walked, all lessons absorbed — divine consciousness grounded in form." },
-    ]
+    ],
+    court:{
+      element:"Earth · Physical Manifestation",
+      rw:[
+        {rank:"Page of Pentacles",symbol:"🜃",meaning:"The scholar of earth. Diligent, curious, building material foundations one studied step at a time."},
+        {rank:"10 of Pentacles",symbol:"🏛",meaning:"Legacy and dynasty. The culmination of material effort across generations — wealth, lineage, permanence."},
+        {rank:"10 of Cups",symbol:"🌈",meaning:"Emotional paradise made real. Heaven on earth — love, family, belonging fully crystallized in Malkuth."},
+        {rank:"Ace of Pentacles",symbol:"⬡",meaning:"The seed of all material possibility. Pure potential for abundance, health, and earthly achievement."}
+      ],
+      thoth:[
+        {rank:"Princess of Disks",symbol:"🜃",meaning:"Earth of Earth. The densest manifestation of physical energy — patient, fertile, holding the entire Tree in her body."},
+        {rank:"Lord of Wealth",symbol:"⬡",meaning:"10 of Disks. Malkuth of Earth — complete material abundance crystallized. The Tree's power fully grounded."},
+        {rank:"Lord of Satiety",symbol:"🌊",meaning:"10 of Cups. Emotional completion in Malkuth — the feeling of wholeness and divine grace made physical."},
+        {rank:"The Universe",symbol:"🜃",meaning:"Trump XXI. The Great Work complete. Spirit and matter unified — the soul fully at home in the world."}
+      ]
+    }
   },
 ];
 
@@ -309,14 +417,40 @@ function TarotCard({ card, color }) {
       maxWidth:180,
     }}>
       <div style={{fontSize:"1.8rem",marginBottom:"0.4rem",textAlign:"center"}}>{card.symbol}</div>
-      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"0.65rem",color,letterSpacing:"0.1em",textTransform:"uppercase",textAlign:"center",marginBottom:"0.2rem"}}>
-        {card.number}
-      </div>
+      {card.number && (
+        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"0.65rem",color,letterSpacing:"0.1em",textTransform:"uppercase",textAlign:"center",marginBottom:"0.2rem"}}>
+          {card.number}
+        </div>
+      )}
       <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1rem",color,textAlign:"center",marginBottom:"0.5rem",fontWeight:400}}>
-        {card.name}
+        {card.name || card.rank}
       </div>
       <div style={{fontSize:"0.75rem",color:"#c4bdd8",lineHeight:1.6,fontStyle:"italic",textAlign:"center"}}>
         {card.meaning}
+      </div>
+    </div>
+  );
+}
+
+function CourtColumn({ title, cards, color }) {
+  return (
+    <div style={{flex:1,minWidth:0}}>
+      <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color,marginBottom:"0.6rem",textAlign:"center",opacity:0.8}}>
+        {title}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
+        {cards.map((c,i)=>(
+          <div key={i} style={{
+            background:"rgba(10,10,15,0.8)",
+            border:`1px solid ${color}33`,
+            borderRadius:9,
+            padding:"0.65rem 0.75rem",
+          }}>
+            <div style={{fontSize:"1.1rem",marginBottom:"0.2rem"}}>{c.symbol}</div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"0.88rem",color,marginBottom:"0.25rem"}}>{c.rank}</div>
+            <div style={{fontSize:"0.7rem",color:"#c4bdd8",lineHeight:1.55,fontStyle:"italic"}}>{c.meaning}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -389,15 +523,28 @@ function TreeOfLife({ activeNums }) {
           <div style={{fontSize:"0.72rem",color:"rgba(155,135,200,0.8)",marginBottom:"0.6rem"}}>{sel.title}</div>
           <div style={{fontSize:"0.82rem",color:"#c4bdd8",lineHeight:1.65,fontStyle:"italic",marginBottom:"1rem"}}>{sel.desc}</div>
 
-          {/* Tarot cards */}
+          {/* Major Arcana */}
           <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.6rem"}}>
-            ✦ Associated Tarot
+            ✦ Major Arcana
           </div>
-          <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
+          <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap",marginBottom:"1rem"}}>
             {sel.tarot.map((card,i)=>(
               <TarotCard key={i} card={card} color={sel.color}/>
             ))}
           </div>
+
+          {/* Court Cards */}
+          {sel.court && (
+            <>
+              <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.5rem"}}>
+                ✦ Court Cards — {sel.court.element}
+              </div>
+              <div style={{display:"flex",gap:"0.75rem"}}>
+                <CourtColumn title="Rider-Waite" cards={sel.court.rw} color={sel.color}/>
+                <CourtColumn title="Thoth" cards={sel.court.thoth} color={sel.color}/>
+              </div>
+            </>
+          )}
 
           {activeSephIds.has(sel.id) && (
             <div style={{marginTop:"0.85rem",fontSize:"0.7rem",color:sel.color,letterSpacing:"0.06em",borderTop:`1px solid ${sel.color}33`,paddingTop:"0.6rem"}}>
