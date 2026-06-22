@@ -10,22 +10,91 @@ const LETTER_MAP = {
 const VOWELS = new Set(["A","E","I","O","U"]);
 const KARMIC_DEBT_NUMBERS = new Set([13,14,16,19]);
 
-// ── Sephiroth data ─────────────────────────────────────────────────────────────
+// ── Sephiroth + Tarot data ─────────────────────────────────────────────────────
 
 const SEPHIROTH = [
-  { id:1,  name:"Kether",    title:"The Crown",        num:1,  x:200, y:40,  color:"#f5f0e0", desc:"Divine unity. The point of pure being before form. Your connection to source." },
-  { id:2,  name:"Chokmah",   title:"Wisdom",           num:2,  x:320, y:110, color:"#c9a96e", desc:"Raw creative force. The first flash of divine thought. Masculine principle." },
-  { id:3,  name:"Binah",     title:"Understanding",    num:3,  x:80,  y:110, color:"#9b87c8", desc:"The great mother. Form-giver. Where potential becomes structure." },
-  { id:4,  name:"Chesed",    title:"Mercy",            num:4,  x:320, y:210, color:"#6ea8c9", desc:"Loving-kindness. Abundance. The architect of divine order and grace." },
-  { id:5,  name:"Geburah",   title:"Strength",         num:5,  x:80,  y:210, color:"#c96e6e", desc:"Severity. Divine judgment. The force that purges what no longer serves." },
-  { id:6,  name:"Tiphareth", title:"Beauty",           num:6,  x:200, y:280, color:"#f5d060", desc:"The heart of the Tree. Harmony, sacrifice, the solar center of the self." },
-  { id:7,  name:"Netzach",   title:"Victory",          num:7,  x:320, y:360, color:"#6ec97a", desc:"Desire, emotion, nature. The realm of feeling and creative passion." },
-  { id:8,  name:"Hod",       title:"Splendour",        num:8,  x:80,  y:360, color:"#c9a96e", desc:"Intellect, communication, magic. Where thought takes form in language." },
-  { id:9,  name:"Yesod",     title:"Foundation",       num:9,  x:200, y:430, color:"#a0c4f5", desc:"The astral plane. Dreams, cycles, the unconscious mirror of reality." },
-  { id:10, name:"Malkuth",   title:"The Kingdom",      num:10, x:200, y:520, color:"#a08060", desc:"Earth. Physical reality. The final crystallization of divine energy into matter." },
+  {
+    id:1, name:"Kether", title:"The Crown", num:1, x:200, y:40, color:"#f5f0e0",
+    desc:"Divine unity. The point of pure being before form. Your connection to source.",
+    tarot:[
+      { name:"The Fool", number:"0", symbol:"🜁", meaning:"Pure potential before manifestation. The soul at the threshold of existence — unformed, fearless, infinite." },
+      { name:"The Magician", number:"I", symbol:"☿", meaning:"The will to begin. Divine power channeled through focused intention into the world of form." },
+    ]
+  },
+  {
+    id:2, name:"Chokmah", title:"Wisdom", num:2, x:320, y:110, color:"#c9a96e",
+    desc:"Raw creative force. The first flash of divine thought. Masculine principle.",
+    tarot:[
+      { name:"The Star", number:"XVII", symbol:"✦", meaning:"Inspiration pouring from the heavens. Hope, cosmic guidance, the light that orients the wandering soul." },
+      { name:"The Emperor", number:"IV", symbol:"♂", meaning:"Structure born from wisdom. The archetype of divine masculine authority and ordered creation." },
+    ]
+  },
+  {
+    id:3, name:"Binah", title:"Understanding", num:3, x:80, y:110, color:"#9b87c8",
+    desc:"The great mother. Form-giver. Where potential becomes structure.",
+    tarot:[
+      { name:"The High Priestess", number:"II", symbol:"☽", meaning:"The veil between worlds. Deep intuition, mystery, the wisdom that cannot be spoken — only felt." },
+      { name:"The Empress", number:"III", symbol:"♀", meaning:"Sacred feminine abundance. Life-giver, nurturer, the intelligence of the natural world made divine." },
+    ]
+  },
+  {
+    id:4, name:"Chesed", title:"Mercy", num:4, x:320, y:210, color:"#6ea8c9",
+    desc:"Loving-kindness. Abundance. The architect of divine order and grace.",
+    tarot:[
+      { name:"The Wheel of Fortune", number:"X", symbol:"🜂", meaning:"Cycles of fate turning. What rises must fall — and what falls shall rise. Trust the turning." },
+      { name:"The Hierophant", number:"V", symbol:"⛪", meaning:"Sacred tradition and spiritual law. The keeper of esoteric wisdom passed through lineage." },
+    ]
+  },
+  {
+    id:5, name:"Geburah", title:"Strength", num:5, x:80, y:210, color:"#c96e6e",
+    desc:"Severity. Divine judgment. The force that purges what no longer serves.",
+    tarot:[
+      { name:"The Tower", number:"XVI", symbol:"⚡", meaning:"Sudden destruction of false structures. The lightning bolt that liberates by shattering illusion." },
+      { name:"Strength", number:"VIII", symbol:"♾", meaning:"Power tamed by love. The roar of the lion silenced not by force but by inner mastery." },
+    ]
+  },
+  {
+    id:6, name:"Tiphareth", title:"Beauty", num:6, x:200, y:280, color:"#f5d060",
+    desc:"The heart of the Tree. Harmony, sacrifice, the solar center of the self.",
+    tarot:[
+      { name:"The Sun", number:"XIX", symbol:"☀", meaning:"Radiant clarity. Joy without condition. The self revealed in its fullest, most luminous expression." },
+      { name:"The Lovers", number:"VI", symbol:"♡", meaning:"Sacred union. The choice between paths, and the love that makes the soul whole." },
+    ]
+  },
+  {
+    id:7, name:"Netzach", title:"Victory", num:7, x:320, y:360, color:"#6ec97a",
+    desc:"Desire, emotion, nature. The realm of feeling and creative passion.",
+    tarot:[
+      { name:"The Empress", number:"III", symbol:"♀", meaning:"The living pulse of nature. Desire as a divine current — creative, fertile, unstoppable." },
+      { name:"The Chariot", number:"VII", symbol:"🜄", meaning:"Victory through directed will. Emotion harnessed and driven forward with fierce intention." },
+    ]
+  },
+  {
+    id:8, name:"Hod", title:"Splendour", num:8, x:80, y:360, color:"#c9a96e",
+    desc:"Intellect, communication, magic. Where thought takes form in language.",
+    tarot:[
+      { name:"The Hermit", number:"IX", symbol:"🕯", meaning:"The lantern in the dark. Wisdom carried inward, knowledge sought in sacred solitude." },
+      { name:"Justice", number:"XI", symbol:"⚖", meaning:"Cosmic law made visible. The precise intelligence that weighs all things with perfect clarity." },
+    ]
+  },
+  {
+    id:9, name:"Yesod", title:"Foundation", num:9, x:200, y:430, color:"#a0c4f5",
+    desc:"The astral plane. Dreams, cycles, the unconscious mirror of reality.",
+    tarot:[
+      { name:"The Moon", number:"XVIII", symbol:"☾", meaning:"The realm of illusion and dream. The unconscious speaks in symbols — learn to read its language." },
+      { name:"The High Priestess", number:"II", symbol:"☽", meaning:"The silver thread between worlds. She holds the scroll of hidden knowledge — patient, knowing, still." },
+    ]
+  },
+  {
+    id:10, name:"Malkuth", title:"The Kingdom", num:10, x:200, y:520, color:"#a08060",
+    desc:"Earth. Physical reality. The final crystallization of divine energy into matter.",
+    tarot:[
+      { name:"The World", number:"XXI", symbol:"🜃", meaning:"Completion. The soul having journeyed the full Tree, now standing whole in the world of matter." },
+      { name:"The Universe", number:"XXI", symbol:"∞", meaning:"Total integration. All paths walked, all lessons absorbed — divine consciousness grounded in form." },
+    ]
+  },
 ];
 
-// Paths between sephiroth [from, to]
 const PATHS = [
   [1,2],[1,3],[1,6],
   [2,3],[2,4],[2,6],
@@ -64,15 +133,13 @@ function reduceWithKarma(n) {
 function lifePathWithKarma(dob) {
   const digits = dob.replace(/\D/g,"");
   if (digits.length<8) return {value:null,karmic:null};
-  const sum = digits.split("").reduce((a,d)=>a+Number(d),0);
-  return reduceWithKarma(sum);
+  return reduceWithKarma(digits.split("").reduce((a,d)=>a+Number(d),0));
 }
 
 function expressionWithKarma(name) {
   const letters = name.toUpperCase().replace(/[^A-Z]/g,"").split("");
   if (!letters.length) return {value:null,karmic:null};
-  const sum = letters.reduce((a,l)=>a+(LETTER_MAP[l]||0),0);
-  return reduceWithKarma(sum);
+  return reduceWithKarma(letters.reduce((a,l)=>a+(LETTER_MAP[l]||0),0));
 }
 
 function soulUrgeNumber(name) {
@@ -112,13 +179,13 @@ function missingNumbers(name) {
   return missing;
 }
 
-// Maps a numerology number (1-9, 11, 22, 33) to a Sephirah id
-function numToSephirah(n) {
-  if (n===11) return 2; // Chokmah
-  if (n===22) return 3; // Binah
-  if (n===33) return 6; // Tiphareth
+function numToSephirahId(n) {
+  if (n===11) return 2;
+  if (n===22) return 3;
+  if (n===33) return 6;
   if (n===10||n===0) return 10;
-  return n; // 1-9 map directly
+  if (n>10) return reduce(n);
+  return n;
 }
 
 // ── Interpretation data ────────────────────────────────────────────────────────
@@ -166,13 +233,13 @@ const PY_THEMES = {
 const MISSING_MEANINGS = {
   1:{shadow:"Difficulty asserting yourself or taking initiative",lesson:"You are learning to own your voice and stand in your authority without needing permission."},
   2:{shadow:"Struggle with patience, diplomacy, or reading others",lesson:"You are learning the art of deep listening and the power of subtle, cooperative energy."},
-  3:{shadow:"Difficulty expressing yourself creatively or communicating joy",lesson:"You are learning to let creativity flow without judgment — to speak, create, and play freely."},
+  3:{shadow:"Difficulty expressing yourself creatively",lesson:"You are learning to let creativity flow without judgment — to speak, create, and play freely."},
   4:{shadow:"Resistance to routine, structure, or sustained effort",lesson:"You are learning that true freedom is built on foundation — discipline is not a cage, it is a launchpad."},
   5:{shadow:"Fear of change, risk, or the unknown",lesson:"You are learning to embrace life's unpredictability as a gift rather than a threat."},
-  6:{shadow:"Difficulty nurturing others or accepting responsibility in relationships",lesson:"You are learning that love given freely — without keeping score — is the most powerful force you carry."},
+  6:{shadow:"Difficulty nurturing others or accepting responsibility",lesson:"You are learning that love given freely — without keeping score — is the most powerful force you carry."},
   7:{shadow:"Avoidance of solitude, depth, or inner work",lesson:"You are learning to trust the unseen — to sit in stillness long enough to hear what your soul knows."},
   8:{shadow:"Complex relationship with money, power, or ambition",lesson:"You are learning that abundance is your birthright — and that wielding power with integrity is a spiritual act."},
-  9:{shadow:"Difficulty with compassion, completion, or seeing the big picture",lesson:"You are learning that all things end, and in that ending is grace — you are here to give, forgive, and release."},
+  9:{shadow:"Difficulty with compassion, completion, or the big picture",lesson:"You are learning that all things end, and in that ending is grace — you are here to give, forgive, and release."},
 };
 
 // ── Compatibility data ─────────────────────────────────────────────────────────
@@ -228,32 +295,56 @@ function getCompat(a,b) {
   return COMPAT[`${Math.min(a,b)}-${Math.max(a,b)}`]||{score:75,text:"A unique vibration pairing. Your numbers create a one-of-a-kind resonance — navigate with openness."};
 }
 
+// ── Tarot Card Component ───────────────────────────────────────────────────────
+
+function TarotCard({ card, color }) {
+  return (
+    <div style={{
+      background:`linear-gradient(160deg, rgba(10,10,15,0.95), ${color}18)`,
+      border:`1px solid ${color}55`,
+      borderRadius:12,
+      padding:"1rem",
+      flex:"1 1 140px",
+      minWidth:130,
+      maxWidth:180,
+    }}>
+      <div style={{fontSize:"1.8rem",marginBottom:"0.4rem",textAlign:"center"}}>{card.symbol}</div>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"0.65rem",color,letterSpacing:"0.1em",textTransform:"uppercase",textAlign:"center",marginBottom:"0.2rem"}}>
+        {card.number}
+      </div>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1rem",color,textAlign:"center",marginBottom:"0.5rem",fontWeight:400}}>
+        {card.name}
+      </div>
+      <div style={{fontSize:"0.75rem",color:"#c4bdd8",lineHeight:1.6,fontStyle:"italic",textAlign:"center"}}>
+        {card.meaning}
+      </div>
+    </div>
+  );
+}
+
 // ── Tree of Life SVG Component ─────────────────────────────────────────────────
 
 function TreeOfLife({ activeNums }) {
-  const [hovered, setHovered] = useState(null);
+  const [selected, setSelected] = useState(null);
 
-  // Collect which sephirah ids are active based on user's numbers
   const activeSephIds = new Set();
   (activeNums||[]).forEach(n => {
-    const mapped = numToSephirah(n % 10 === 0 ? 10 : n > 9 && n < 11 ? n : n > 9 ? n % 9 : n);
-    activeSephIds.add(mapped);
+    activeSephIds.add(numToSephirahId(n));
   });
 
-  const hov = hovered ? SEPHIROTH.find(s=>s.id===hovered) : null;
+  const sel = selected ? SEPHIROTH.find(s=>s.id===selected) : null;
 
   return (
-    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"1rem"}}>
-      <svg viewBox="0 0 400 570" width="100%" style={{maxWidth:320,display:"block"}}>
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"1.25rem"}}>
+      <svg viewBox="0 0 400 570" width="100%" style={{maxWidth:300,display:"block"}}>
         {/* Paths */}
         {PATHS.map(([a,b],i)=>{
           const sa = SEPHIROTH.find(s=>s.id===a);
           const sb = SEPHIROTH.find(s=>s.id===b);
           const bothActive = activeSephIds.has(a) && activeSephIds.has(b);
           return (
-            <line key={i}
-              x1={sa.x} y1={sa.y} x2={sb.x} y2={sb.y}
-              stroke={bothActive ? "rgba(201,169,110,0.5)" : "rgba(160,140,200,0.12)"}
+            <line key={i} x1={sa.x} y1={sa.y} x2={sb.x} y2={sb.y}
+              stroke={bothActive ? "rgba(201,169,110,0.45)" : "rgba(160,140,200,0.1)"}
               strokeWidth={bothActive ? 1.5 : 1}
             />
           );
@@ -262,80 +353,69 @@ function TreeOfLife({ activeNums }) {
         {/* Nodes */}
         {SEPHIROTH.map(s=>{
           const isActive = activeSephIds.has(s.id);
-          const isHovered = hovered===s.id;
+          const isSel = selected===s.id;
           return (
             <g key={s.id} style={{cursor:"pointer"}}
-              onMouseEnter={()=>setHovered(s.id)}
-              onMouseLeave={()=>setHovered(null)}
-              onClick={()=>setHovered(hovered===s.id?null:s.id)}
+              onClick={()=>setSelected(isSel?null:s.id)}
             >
-              {/* Glow ring for active */}
               {isActive && (
-                <circle cx={s.x} cy={s.y} r={22}
-                  fill="none"
-                  stroke={s.color}
-                  strokeWidth={1.5}
-                  opacity={0.4}
-                />
+                <circle cx={s.x} cy={s.y} r={24} fill="none"
+                  stroke={s.color} strokeWidth={1} opacity={0.3}/>
               )}
-              {/* Main circle */}
               <circle cx={s.x} cy={s.y} r={16}
-                fill={isActive ? `${s.color}22` : "rgba(17,17,24,0.9)"}
-                stroke={isActive ? s.color : isHovered ? "rgba(160,140,200,0.5)" : "rgba(160,140,200,0.2)"}
-                strokeWidth={isActive ? 1.5 : 1}
+                fill={isSel ? `${s.color}33` : isActive ? `${s.color}18` : "rgba(17,17,24,0.95)"}
+                stroke={isSel ? s.color : isActive ? s.color : "rgba(160,140,200,0.18)"}
+                strokeWidth={isSel ? 2 : isActive ? 1.5 : 1}
               />
-              {/* Number */}
               <text x={s.x} y={s.y+1} textAnchor="middle" dominantBaseline="middle"
-                fontSize={s.id===10?"9":"10"}
-                fill={isActive ? s.color : "rgba(136,128,160,0.7)"}
-                fontFamily="Cormorant Garamond, serif"
-                fontWeight={isActive?"600":"400"}
-              >
-                {s.num}
-              </text>
-              {/* Name label */}
-              <text x={s.x} y={s.y+28} textAnchor="middle"
-                fontSize="7.5"
-                fill={isActive ? "rgba(232,228,240,0.9)" : "rgba(136,128,160,0.5)"}
+                fontSize="10" fontFamily="Cormorant Garamond, serif" fontWeight={isActive?"600":"400"}
+                fill={isActive ? s.color : "rgba(136,128,160,0.55)"}
+              >{s.num}</text>
+              <text x={s.x} y={s.y+28} textAnchor="middle" fontSize="7"
                 fontFamily="Inter, sans-serif"
-              >
-                {s.name}
-              </text>
+                fill={isActive ? "rgba(232,228,240,0.8)" : "rgba(136,128,160,0.4)"}
+              >{s.name}</text>
             </g>
           );
         })}
       </svg>
 
-      {/* Tooltip panel */}
-      {hov && (
-        <div style={{
-          background:"#111118",border:"1px solid rgba(160,140,200,0.2)",
-          borderRadius:10,padding:"1rem 1.25rem",maxWidth:300,width:"100%",
-          borderLeft:`3px solid ${hov.color}`
-        }}>
-          <div style={{fontSize:"0.65rem",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(136,128,160,0.7)",marginBottom:"0.25rem"}}>
-            Sephirah {hov.num}
+      {/* Detail panel */}
+      {sel && (
+        <div style={{width:"100%",maxWidth:380,background:"#0e0e15",border:`1px solid ${sel.color}44`,borderRadius:14,padding:"1.25rem",borderLeft:`3px solid ${sel.color}`}}>
+          {/* Sephirah info */}
+          <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.2rem"}}>Sephirah {sel.num}</div>
+          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.6rem",color:sel.color,lineHeight:1.1}}>{sel.name}</div>
+          <div style={{fontSize:"0.72rem",color:"rgba(155,135,200,0.8)",marginBottom:"0.6rem"}}>{sel.title}</div>
+          <div style={{fontSize:"0.82rem",color:"#c4bdd8",lineHeight:1.65,fontStyle:"italic",marginBottom:"1rem"}}>{sel.desc}</div>
+
+          {/* Tarot cards */}
+          <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.6rem"}}>
+            ✦ Associated Tarot
           </div>
-          <div style={{fontFamily:"Cormorant Garamond, serif",fontSize:"1.3rem",color:hov.color,marginBottom:"0.2rem"}}>
-            {hov.name}
+          <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
+            {sel.tarot.map((card,i)=>(
+              <TarotCard key={i} card={card} color={sel.color}/>
+            ))}
           </div>
-          <div style={{fontSize:"0.72rem",color:"rgba(155,135,200,0.8)",marginBottom:"0.5rem"}}>
-            {hov.title}
-          </div>
-          <div style={{fontSize:"0.82rem",color:"#c4bdd8",lineHeight:1.6,fontStyle:"italic"}}>
-            {hov.desc}
-          </div>
-          {activeSephIds.has(hov.id) && (
-            <div style={{marginTop:"0.6rem",fontSize:"0.68rem",color:hov.color,letterSpacing:"0.06em"}}>
-              ✦ Active in your chart
+
+          {activeSephIds.has(sel.id) && (
+            <div style={{marginTop:"0.85rem",fontSize:"0.7rem",color:sel.color,letterSpacing:"0.06em",borderTop:`1px solid ${sel.color}33`,paddingTop:"0.6rem"}}>
+              ✦ This Sephirah is active in your personal chart
             </div>
           )}
         </div>
       )}
 
-      {activeSephIds.size === 0 && (
-        <p style={{fontSize:"0.8rem",color:"rgba(136,128,160,0.6)",textAlign:"center"}}>
-          Enter your name & birth date to illuminate your Tree
+      {activeSephIds.size === 0 && !selected && (
+        <p style={{fontSize:"0.8rem",color:"rgba(136,128,160,0.5)",textAlign:"center",maxWidth:260,lineHeight:1.6}}>
+          Calculate your numbers first, then return here to illuminate your Tree and reveal your Tarot correspondences.
+        </p>
+      )}
+
+      {activeSephIds.size > 0 && !selected && (
+        <p style={{fontSize:"0.75rem",color:"rgba(136,128,160,0.55)",textAlign:"center"}}>
+          Tap a glowing node to reveal its Tarot cards
         </p>
       )}
     </div>
@@ -359,8 +439,8 @@ const styles = `
   .header-eye{font-size:2.2rem;margin-bottom:.75rem;opacity:.85;}
   .header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3.2rem);font-weight:300;letter-spacing:.08em;color:var(--gold);line-height:1.1;}
   .header p{font-size:.85rem;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase;margin-top:.5rem;}
-  .tabs{display:flex;gap:.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.25rem;margin-bottom:2rem;flex-wrap:wrap;}
-  .tab{flex:1;min-width:80px;padding:.6rem .4rem;font-size:.72rem;font-family:'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;color:var(--text-dim);cursor:pointer;border-radius:7px;transition:all .2s;}
+  .tabs{display:flex;gap:.2rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.25rem;margin-bottom:2rem;flex-wrap:wrap;}
+  .tab{flex:1;min-width:70px;padding:.55rem .3rem;font-size:.68rem;font-family:'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;background:none;border:none;color:var(--text-dim);cursor:pointer;border-radius:7px;transition:all .2s;white-space:nowrap;}
   .tab.active{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,169,110,0.3);}
   .tab:hover:not(.active){color:var(--text);}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:1.25rem;}
@@ -383,7 +463,7 @@ const styles = `
   .num-card .meaning-body{font-size:.83rem;line-height:1.65;color:#c4bdd8;margin-top:.85rem;padding-top:.85rem;border-top:1px solid var(--border);font-style:italic;}
   .num-card .toggle-hint{font-size:.65rem;color:var(--text-dim);margin-top:.5rem;letter-spacing:.05em;}
   .karmic-card{background:rgba(180,60,80,.08);border:1px solid rgba(220,100,110,.3);border-radius:12px;padding:1.25rem;margin-bottom:.85rem;cursor:pointer;transition:all .2s;}
-  .karmic-card:hover,.karmic-card.open{border-color:rgba(220,100,110,.55);background:rgba(180,60,80,.13);}
+  .karmic-card:hover,.karmic-card.open{border-color:rgba(220,100,110,.55);}
   .karmic-card .k-eyebrow{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#e07080;margin-bottom:.35rem;}
   .karmic-card .k-number{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:#e07080;line-height:1;}
   .karmic-card .k-title{font-size:.82rem;color:#e8b0b8;margin-top:.3rem;font-weight:500;}
@@ -418,7 +498,6 @@ const styles = `
   .person-block{margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
   .person-block:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
   .person-label{font-size:.72rem;color:var(--violet);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;}
-  .tree-intro{font-size:.78rem;color:var(--text-dim);text-align:center;margin-bottom:1rem;line-height:1.6;}
 `;
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -476,7 +555,6 @@ export default function NumerologyCalculator() {
     {key:"bd",label:"Birthday",value:results.bd},
   ] : [];
 
-  // Collect active nums for Tree
   const activeNums = results
     ? [results.lp,results.ex,results.su,results.pe,results.bd].filter(Boolean)
     : [];
@@ -517,7 +595,6 @@ export default function NumerologyCalculator() {
 
             {results && (
               <>
-                {/* Core numbers */}
                 <div className="divider"><span>Your Numerology Profile</span></div>
                 <div className="results-grid">
                   {numCards.map(({key,label,value})=>{
@@ -538,7 +615,6 @@ export default function NumerologyCalculator() {
                   })}
                 </div>
 
-                {/* Personal Year */}
                 {results.py && (
                   <>
                     <div className="divider"><span>Personal Year {new Date().getFullYear()}</span></div>
@@ -546,12 +622,11 @@ export default function NumerologyCalculator() {
                       <div className="py-label">Your {new Date().getFullYear()} Vibration</div>
                       <div className="py-number">{results.py}</div>
                       <div className="num-title">{pyM?.title}</div>
-                      <div className="py-theme">This year calls you to {PY_THEMES[results.py] || "integrate all you've gathered"}.</div>
+                      <div className="py-theme">This year calls you to {PY_THEMES[results.py]||"integrate all you've gathered"}.</div>
                     </div>
                   </>
                 )}
 
-                {/* Karmic Debts */}
                 {results.karmicDebts?.length > 0 && (
                   <>
                     <div className="divider"><span>⚠ Karmic Debt Detected</span></div>
@@ -572,13 +647,12 @@ export default function NumerologyCalculator() {
                   </>
                 )}
 
-                {/* Missing Numbers */}
                 {results.missing?.length > 0 && (
                   <>
                     <div className="divider"><span>Missing Numbers in Your Name</span></div>
                     <div className="card">
                       <p style={{fontSize:".8rem",color:"var(--text-dim)",marginBottom:".75rem",lineHeight:1.6}}>
-                        These numbers are absent from your birth name — areas where your soul came to develop mastery.
+                        Absent from your birth name — areas where your soul came to develop mastery.
                       </p>
                       <div className="missing-grid">
                         {results.missing.map(n=>(
@@ -596,6 +670,11 @@ export default function NumerologyCalculator() {
                     </div>
                   </>
                 )}
+
+                <div className="divider"><span>✦</span></div>
+                <p style={{textAlign:"center",fontSize:".78rem",color:"var(--text-dim)",lineHeight:1.7}}>
+                  Visit the <strong style={{color:"var(--gold)"}}>Tree of Life</strong> tab to see your Kabbalistic placements and Tarot correspondences.
+                </p>
               </>
             )}
           </>
@@ -604,26 +683,24 @@ export default function NumerologyCalculator() {
         {/* ── TREE OF LIFE ── */}
         {tab==="tree" && (
           <>
-            <div className="card">
-              {!results && (
-                <>
-                  <div className="field">
-                    <label>Full Birth Name</label>
-                    <input value={name} onChange={e=>setName(e.target.value)} placeholder="As it appears on your birth certificate"/>
-                  </div>
-                  <div className="field">
-                    <label>Date of Birth</label>
-                    <input type="date" value={dob} onChange={e=>setDob(e.target.value)}/>
-                  </div>
-                  <button className="btn" onClick={calculate}>Illuminate My Tree</button>
-                </>
-              )}
-              {results && (
-                <p className="tree-intro">
-                  Your active Sephiroth are illuminated. Tap any node to explore its meaning.
-                </p>
-              )}
-            </div>
+            {!results && (
+              <div className="card">
+                <div className="field">
+                  <label>Full Birth Name</label>
+                  <input value={name} onChange={e=>setName(e.target.value)} placeholder="As it appears on your birth certificate"/>
+                </div>
+                <div className="field">
+                  <label>Date of Birth</label>
+                  <input type="date" value={dob} onChange={e=>setDob(e.target.value)}/>
+                </div>
+                <button className="btn" onClick={calculate}>Illuminate My Tree</button>
+              </div>
+            )}
+            {results && (
+              <p style={{textAlign:"center",fontSize:".78rem",color:"var(--text-dim)",marginBottom:"1rem",lineHeight:1.6}}>
+                Glowing nodes are active in your chart. Tap any node to reveal its meaning and Tarot cards.
+              </p>
+            )}
             <div className="card">
               <TreeOfLife activeNums={activeNums}/>
             </div>
