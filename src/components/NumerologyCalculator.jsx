@@ -437,6 +437,90 @@ const MISSING_MEANINGS = {
   9:{shadow:"Difficulty with compassion, completion, or the big picture",lesson:"You are learning that all things end, and in that ending is grace — you are here to give, forgive, and release."},
 };
 
+
+// ── Pinnacles & Challenges ────────────────────────────────────────────────────
+
+function getPinnaclesAndChallenges(dob) {
+  const parts = dob.split(/[-\/]/);
+  const month = parseInt(parts[1]||"",10);
+  const day   = parseInt(parts[2]||"",10);
+  const year  = parseInt(parts[0]||"",10);
+  if (isNaN(month)||isNaN(day)||isNaN(year)) return null;
+
+  const m = reduce(month);
+  const d = reduce(day);
+  const y = reduce(year);
+  const lp = reduce(m + d + y);
+  const age = new Date().getFullYear() - year;
+
+  // Pinnacle ages
+  const p1end = 36 - lp;
+  const p2end = p1end + 9;
+  const p3end = p2end + 9;
+
+  const p1 = reduce(m + d);
+  const p2 = reduce(d + y);
+  const p3 = reduce(p1 + p2);
+  const p4 = reduce(m + y);
+
+  const c1 = Math.abs(m - d);
+  const c2 = Math.abs(d - y);
+  const c3 = Math.abs(c1 - c2);
+  const c4 = Math.abs(m - y);
+
+  const current = age <= p1end ? 0 : age <= p2end ? 1 : age <= p3end ? 2 : 3;
+
+  return {
+    pinnacles: [
+      { num: p1, ages: `0 – ${p1end}` },
+      { num: p2, ages: `${p1end+1} – ${p2end}` },
+      { num: p3, ages: `${p2end+1} – ${p3end}` },
+      { num: p4, ages: `${p3end+1}+` },
+    ],
+    challenges: [
+      { num: c1, ages: `0 – ${p1end}` },
+      { num: c2, ages: `${p1end+1} – ${p2end}` },
+      { num: c3, ages: `${p2end+1} – ${p3end}` },
+      { num: c4, ages: `${p3end+1}+` },
+    ],
+    current,
+  };
+}
+
+const PINNACLE_MEANINGS = {
+  1: { theme:"Independence", body:"This chapter is about stepping into your own identity. You are being called to lead, initiate, and trust yourself completely. Lean into originality — this is not the time to follow." },
+  2: { theme:"Partnership", body:"This chapter asks you to slow down and collaborate. Relationships, patience, and emotional sensitivity are your teachers here. Your power comes through connection, not force." },
+  3: { theme:"Expression", body:"Creativity, joy, and communication define this chapter. You are being asked to express yourself boldly — through art, words, or social connection. Don't hide your light." },
+  4: { theme:"Foundation", body:"Hard work, discipline, and building something real. This chapter rewards effort and punishes shortcuts. You are laying the foundation for everything that comes after." },
+  5: { theme:"Freedom", body:"Change, movement, and expansion. This chapter brings upheaval that ultimately liberates. Stay flexible — what looks like chaos is actually evolution." },
+  6: { theme:"Responsibility", body:"Love, family, and duty define this chapter. You are needed. Your gifts are in service to others — embrace this without losing yourself in the process." },
+  7: { theme:"Inner Truth", body:"A deeply internal chapter. Solitude, study, and spiritual seeking are your allies. The world rewards you for going deep rather than wide right now." },
+  8: { theme:"Power", body:"Achievement, ambition, and material mastery. This chapter is about stepping into your full power in the world. Money, career, and leadership are all in focus." },
+  9: { theme:"Completion", body:"A chapter of endings and universal service. You are releasing what no longer belongs to you. Generosity and letting go are your greatest strengths right now." },
+  11: { theme:"Illumination", body:"A master pinnacle. You are being called to inspire on a large scale. Heightened sensitivity and visionary insight define this period — trust what you see." },
+  22: { theme:"Mastery", body:"A master pinnacle of building at scale. Ideas become reality. You have the capacity to create something that outlasts this lifetime — don't shrink from it." },
+};
+
+const CHALLENGE_MEANINGS = {
+  0: { theme:"The Great Choice", body:"Zero challenge is the rarest and hardest — you chose ALL lessons this lifetime. Extraordinary freedom comes with extraordinary responsibility. Nothing is predetermined for you." },
+  1: { theme:"Self-Reliance", body:"You are learning to trust yourself and stop waiting for permission. The block is dependency or self-doubt. The breakthrough is sovereign confidence." },
+  2: { theme:"Oversensitivity", body:"You are learning to hold your own feelings without being overwhelmed by others'. The block is people-pleasing. The breakthrough is healthy emotional boundaries." },
+  3: { theme:"Self-Expression", body:"You are learning to speak up and create without fear of judgment. The block is self-criticism. The breakthrough is fearless creative voice." },
+  4: { theme:"Discipline", body:"You are learning to do the work — consistently, without shortcuts. The block is avoidance. The breakthrough is the quiet pride of mastery earned." },
+  5: { theme:"Freedom vs Excess", body:"You are learning to embrace change without losing yourself to it. The block is addiction or recklessness. The breakthrough is freedom with intention." },
+  6: { theme:"Perfectionism", body:"You are learning to love imperfectly — yourself and others. The block is impossible standards. The breakthrough is grace." },
+  7: { theme:"Trust", body:"You are learning to trust — life, people, the unseen. The block is cynicism or isolation. The breakthrough is faith rooted in real experience." },
+  8: { theme:"Power & Worth", body:"You are learning your relationship with power and money. The block is fear of success or misuse of authority. The breakthrough is ethical mastery." },
+};
+
+function getPinnacleMeaning(n) {
+  return PINNACLE_MEANINGS[n] || { theme:`Vibration ${n}`, body:"A rare and unique pinnacle energy — your path through this chapter is entirely your own." };
+}
+
+function getChallengeMeaning(n) {
+  return CHALLENGE_MEANINGS[n] || { theme:`Lesson ${n}`, body:"A rare challenge vibration — your lesson here is deeply personal and powerfully transformative." };
+}
+
 // ── Compatibility data ─────────────────────────────────────────────────────────
 
 const COMPAT = {
@@ -758,10 +842,11 @@ export default function NumerologyCalculator() {
     const py = personalYearNumber(dob);
     const missing = missingNumbers(name);
     const sign = getSunSign(dob);
+    const pc = getPinnaclesAndChallenges(dob);
     const karmicDebts = [];
     if (lpK.karmic) karmicDebts.push({debt:lpK.karmic,source:"Life Path"});
     if (exK.karmic) karmicDebts.push({debt:exK.karmic,source:"Expression"});
-    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing,sign});
+    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing,sign,pc});
     setOpenCards({});
     setOpenMissing(null);
   }
@@ -926,6 +1011,52 @@ export default function NumerologyCalculator() {
                         <div style={{fontSize:"0.85rem",color:"#c4bdd8",lineHeight:1.7,fontStyle:"italic",borderTop:`1px solid ${ec}22`,paddingTop:"0.85rem"}}>
                           {reading}
                         </div>
+                      </div>
+                    </>
+                  );
+                })()}
+
+                {/* Pinnacles & Challenges */}
+                {results.pc && (()=>{
+                  const {pinnacles, challenges, current} = results.pc;
+                  return (
+                    <>
+                      <div className="divider"><span>Pinnacles & Challenges</span></div>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.75rem",marginBottom:"1rem"}}>
+                        {pinnacles.map((p,i)=>{
+                          const pm = getPinnacleMeaning(p.num);
+                          const cm = getChallengeMeaning(challenges[i].num);
+                          const isCurrent = i === current;
+                          return (
+                            <div key={i} style={{
+                              background: isCurrent ? "rgba(201,169,110,0.07)" : "var(--surface2)",
+                              border: isCurrent ? "1px solid rgba(201,169,110,0.35)" : "1px solid var(--border)",
+                              borderRadius:12, padding:"1.1rem",
+                            }}>
+                              {isCurrent && (
+                                <div style={{fontSize:"0.62rem",color:"var(--gold)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>
+                                  ✦ You are here
+                                </div>
+                              )}
+                              <div style={{display:"flex",gap:"0.75rem",alignItems:"flex-start"}}>
+                                {/* Pinnacle */}
+                                <div style={{flex:1,borderRight:"1px solid var(--border)",paddingRight:"0.75rem"}}>
+                                  <div style={{fontSize:"0.6rem",color:"var(--text-dim)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Pinnacle {i+1} · {p.ages}</div>
+                                  <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2rem",color:"var(--gold)",lineHeight:1}}>{p.num}</div>
+                                  <div style={{fontSize:"0.75rem",color:"var(--violet)",marginTop:"0.2rem"}}>{pm.theme}</div>
+                                  <div style={{fontSize:"0.72rem",color:"#c4bdd8",lineHeight:1.6,marginTop:"0.4rem",fontStyle:"italic"}}>{pm.body}</div>
+                                </div>
+                                {/* Challenge */}
+                                <div style={{flex:1,paddingLeft:"0.25rem"}}>
+                                  <div style={{fontSize:"0.6rem",color:"#e07080",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Challenge · {challenges[i].ages}</div>
+                                  <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2rem",color:"#e07080",lineHeight:1}}>{challenges[i].num}</div>
+                                  <div style={{fontSize:"0.75rem",color:"#e8b0b8",marginTop:"0.2rem"}}>{cm.theme}</div>
+                                  <div style={{fontSize:"0.72rem",color:"#d4a8b0",lineHeight:1.6,marginTop:"0.4rem",fontStyle:"italic"}}>{cm.body}</div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </>
                   );
