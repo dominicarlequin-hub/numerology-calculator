@@ -296,6 +296,93 @@ function numToSephirahId(n) {
   return n;
 }
 
+
+// ── Astrology data ────────────────────────────────────────────────────────────
+
+function getSunSign(dob) {
+  const parts = dob.split(/[-\/]/);
+  const month = parseInt(parts[1]||"",10);
+  const day = parseInt(parts[2]||"",10);
+  if (isNaN(month)||isNaN(day)) return null;
+  if ((month===3&&day>=21)||(month===4&&day<=19)) return "Aries";
+  if ((month===4&&day>=20)||(month===5&&day<=20)) return "Taurus";
+  if ((month===5&&day>=21)||(month===6&&day<=20)) return "Gemini";
+  if ((month===6&&day>=21)||(month===7&&day<=22)) return "Cancer";
+  if ((month===7&&day>=23)||(month===8&&day<=22)) return "Leo";
+  if ((month===8&&day>=23)||(month===9&&day<=22)) return "Virgo";
+  if ((month===9&&day>=23)||(month===10&&day<=22)) return "Libra";
+  if ((month===10&&day>=23)||(month===11&&day<=21)) return "Scorpio";
+  if ((month===11&&day>=22)||(month===12&&day<=21)) return "Sagittarius";
+  if ((month===12&&day>=22)||(month===1&&day<=19)) return "Capricorn";
+  if ((month===1&&day>=20)||(month===2&&day<=18)) return "Aquarius";
+  return "Pisces";
+}
+
+const SIGNS = {
+  Aries:     { symbol:"♈", element:"Fire",  ruling:"Mars",    quality:"Cardinal", keywords:"Bold · Pioneering · Passionate" },
+  Taurus:    { symbol:"♉", element:"Earth", ruling:"Venus",   quality:"Fixed",    keywords:"Sensual · Patient · Devoted" },
+  Gemini:    { symbol:"♊", element:"Air",   ruling:"Mercury", quality:"Mutable",  keywords:"Curious · Witty · Adaptive" },
+  Cancer:    { symbol:"♋", element:"Water", ruling:"Moon",    quality:"Cardinal", keywords:"Nurturing · Intuitive · Protective" },
+  Leo:       { symbol:"♌", element:"Fire",  ruling:"Sun",     quality:"Fixed",    keywords:"Radiant · Creative · Generous" },
+  Virgo:     { symbol:"♍", element:"Earth", ruling:"Mercury", quality:"Mutable",  keywords:"Precise · Devoted · Discerning" },
+  Libra:     { symbol:"♎", element:"Air",   ruling:"Venus",   quality:"Cardinal", keywords:"Harmonious · Just · Magnetic" },
+  Scorpio:   { symbol:"♏", element:"Water", ruling:"Pluto",   quality:"Fixed",    keywords:"Intense · Perceptive · Transformative" },
+  Sagittarius:{ symbol:"♐",element:"Fire",  ruling:"Jupiter", quality:"Mutable",  keywords:"Visionary · Free · Philosophical" },
+  Capricorn: { symbol:"♑", element:"Earth", ruling:"Saturn",  quality:"Cardinal", keywords:"Disciplined · Ambitious · Enduring" },
+  Aquarius:  { symbol:"♒", element:"Air",   ruling:"Uranus",  quality:"Fixed",    keywords:"Innovative · Humanitarian · Eccentric" },
+  Pisces:    { symbol:"♓", element:"Water", ruling:"Neptune", quality:"Mutable",  keywords:"Mystical · Compassionate · Fluid" },
+};
+
+const ELEMENT_COLORS = { Fire:"#e8855a", Earth:"#a08060", Air:"#9bc4e8", Water:"#7ba8c4" };
+
+// How each sign element interacts with each Life Path number
+const SIGN_LP_COMBOS = {
+  "Fire-1":   "Two forces of initiation collide. Your will to lead is supercharged — almost electric. Channel it or burn out.",
+  "Fire-3":   "Pure creative combustion. Expression meets passion — you were made to perform, create, inspire.",
+  "Fire-5":   "Freedom squared. Relentless movement, endless adventure. The challenge: learning to stay.",
+  "Fire-7":   "The mystic warrior. Your intellect burns like a torch in the dark — intense, searching, transformative.",
+  "Fire-9":   "The crusader. Your compassion has fire behind it — you don't just care, you act.",
+  "Fire-2":   "Warmth meets sensitivity. Your fire can protect or overwhelm — learn when to dim.",
+  "Fire-4":   "Ambition meets structure. The builder with a torch — powerful when disciplined.",
+  "Fire-6":   "The passionate guardian. You love fiercely and protect completely.",
+  "Fire-8":   "The sovereign flame. Power, ambition, mastery — a force of nature in the material world.",
+  "Earth-1":  "Grounded pioneer. You don't just start things — you finish them and make them last.",
+  "Earth-2":  "Patient diplomacy. You build bridges slowly, carefully, and they hold forever.",
+  "Earth-3":  "Creativity with roots. Your art has substance — beauty that endures.",
+  "Earth-4":  "The master builder. Earth + 4 is perhaps the most grounded energy in existence.",
+  "Earth-5":  "A beautiful tension. Your soul craves freedom but your nature seeks stability. Both are true.",
+  "Earth-6":  "The devoted nurturer. Home, family, beauty — you build sanctuaries others never want to leave.",
+  "Earth-7":  "The scholar of matter. You seek hidden truth through tangible reality — science, nature, craft.",
+  "Earth-8":  "Material mastery personified. Wealth, legacy, empire — built brick by brick.",
+  "Earth-9":  "Service made solid. Your compassion produces real, lasting results in the world.",
+  "Air-1":    "The visionary. Ideas become lightning bolts — you think fast and lead with your mind.",
+  "Air-2":    "The diplomat. Words are your gift — you heal relationships with language alone.",
+  "Air-3":    "The communicator. You could talk, write, or perform your way into any room in the world.",
+  "Air-4":    "The strategist. You plan with precision and execute with logic — a formidable mind.",
+  "Air-5":    "The freedom thinker. Philosophy, travel, ideas — you need wide open mental space.",
+  "Air-6":    "The harmonizer. You bring people together through understanding and clear communication.",
+  "Air-7":    "The philosopher. Your mind is your temple — you live for deep, abstract truth.",
+  "Air-8":    "The intellectual sovereign. Strategy + power = influence that shapes the world.",
+  "Air-9":    "The humanitarian thinker. You see solutions to problems others haven't named yet.",
+  "Water-1":  "The emotional pioneer. You lead through feeling — people follow because they feel seen by you.",
+  "Water-2":  "Pure empathy. You absorb others' emotions like water absorbs light. Protection is essential.",
+  "Water-3":  "The creative dreamer. Art flows through you — especially music, poetry, anything that moves.",
+  "Water-4":  "Emotional architecture. You build structures that hold feeling — therapist, artist, healer.",
+  "Water-5":  "The free feeling. You move through life following emotional currents — intuitive, fluid, restless.",
+  "Water-6":  "The sacred heart. Love, healing, family — your emotional depth is your greatest gift.",
+  "Water-7":  "The mystic. Water + 7 is the most psychically sensitive combination possible.",
+  "Water-8":  "Emotional power. You lead not through force but through deep understanding of what people need.",
+  "Water-9":  "Universal love embodied. You feel everyone's pain and carry it as purpose.",
+};
+
+function getSignLPReading(sign, lp) {
+  const el = SIGNS[sign]?.element;
+  if (!el) return null;
+  // Try exact key, then reduce master numbers to single digit for lookup
+  const reduced = lp > 9 ? String(lp).split("").reduce((a,d)=>a+Number(d),0) : lp;
+  return SIGN_LP_COMBOS[`${el}-${lp}`] || SIGN_LP_COMBOS[`${el}-${reduced}`] || `${sign} and Life Path ${lp} — ${el} energy meeting the vibration of ${lp}. A rare and potent combination.`;
+}
+
 // ── Interpretation data ────────────────────────────────────────────────────────
 
 const MEANINGS = {
@@ -670,10 +757,11 @@ export default function NumerologyCalculator() {
     const bd = birthdayNumber(dob);
     const py = personalYearNumber(dob);
     const missing = missingNumbers(name);
+    const sign = getSunSign(dob);
     const karmicDebts = [];
     if (lpK.karmic) karmicDebts.push({debt:lpK.karmic,source:"Life Path"});
     if (exK.karmic) karmicDebts.push({debt:exK.karmic,source:"Expression"});
-    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing});
+    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing,sign});
     setOpenCards({});
     setOpenMissing(null);
   }
@@ -817,6 +905,31 @@ export default function NumerologyCalculator() {
                     </div>
                   </>
                 )}
+
+                {/* Astrology */}
+                {results.sign && SIGNS[results.sign] && (()=>{
+                  const s = SIGNS[results.sign];
+                  const ec = ELEMENT_COLORS[s.element];
+                  const reading = getSignLPReading(results.sign, results.lp || 0);
+                  return (
+                    <>
+                      <div className="divider"><span>Your Astrological Signature</span></div>
+                      <div style={{background:`linear-gradient(135deg, rgba(10,10,15,0.95), ${ec}15)`,border:`1px solid ${ec}44`,borderRadius:14,padding:"1.5rem",marginBottom:"1rem"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:"1rem",marginBottom:"1rem"}}>
+                          <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"3rem",color:ec,lineHeight:1}}>{s.symbol}</div>
+                          <div>
+                            <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"1.6rem",color:ec,lineHeight:1}}>{results.sign}</div>
+                            <div style={{fontSize:"0.7rem",color:"rgba(232,228,240,0.5)",letterSpacing:"0.08em",textTransform:"uppercase",marginTop:"0.2rem"}}>{s.element} · {s.quality} · Ruled by {s.ruling}</div>
+                          </div>
+                        </div>
+                        <div style={{fontSize:"0.75rem",color:`${ec}cc`,letterSpacing:"0.06em",marginBottom:"0.85rem"}}>{s.keywords}</div>
+                        <div style={{fontSize:"0.85rem",color:"#c4bdd8",lineHeight:1.7,fontStyle:"italic",borderTop:`1px solid ${ec}22`,paddingTop:"0.85rem"}}>
+                          {reading}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
 
                 <div className="divider"><span>✦</span></div>
                 <p style={{textAlign:"center",fontSize:".78rem",color:"var(--text-dim)",lineHeight:1.7}}>
