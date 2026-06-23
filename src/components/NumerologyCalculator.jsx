@@ -521,6 +521,56 @@ function getChallengeMeaning(n) {
   return CHALLENGE_MEANINGS[n] || { theme:`Lesson ${n}`, body:"A rare challenge vibration — your lesson here is deeply personal and powerfully transformative." };
 }
 
+
+// ── Life Path Cycles ──────────────────────────────────────────────────────────
+
+function getLifePathCycles(dob) {
+  const parts = dob.split(/[-\/]/);
+  const month = parseInt(parts[1]||"",10);
+  const day   = parseInt(parts[2]||"",10);
+  const year  = parseInt(parts[0]||"",10);
+  if (isNaN(month)||isNaN(day)||isNaN(year)) return null;
+
+  const m = reduce(month);
+  const d = reduce(day);
+  const y = reduce(year);
+  const lp = reduce(m + d + y);
+  const age = new Date().getFullYear() - year;
+
+  const c1end = 36 - lp;
+  const c2end = c1end + 27;
+
+  const current = age <= c1end ? 0 : age <= c2end ? 1 : 2;
+
+  return {
+    cycles: [
+      { num: m, label:"1st Cycle", ages:`0 – ${c1end}`, source:"Birth Month" },
+      { num: d, label:"2nd Cycle", ages:`${c1end+1} – ${c2end}`, source:"Birth Day" },
+      { num: y, label:"3rd Cycle", ages:`${c2end+1}+`, source:"Birth Year" },
+    ],
+    current,
+  };
+}
+
+const CYCLE_MEANINGS = {
+  1:{ theme:"The Self", body:"You are being shaped into an individual. Independence, identity, and the courage to stand alone are the gifts of this cycle. You are learning what it means to be YOU — separate, sovereign, and self-directed." },
+  2:{ theme:"The Relationship", body:"This cycle teaches through connection. You are learning sensitivity, patience, and the art of true partnership. Your growth comes through others — not in spite of them." },
+  3:{ theme:"The Creative", body:"Expression is your teacher here. Joy, art, communication, and social connection define this period. You are learning to let your inner world out — without apology." },
+  4:{ theme:"The Builder", body:"Discipline and foundation. This cycle rewards hard work and punishes shortcuts. You are learning that real freedom is built, not found." },
+  5:{ theme:"The Explorer", body:"Change, adventure, and sensory experience define this cycle. You are learning to move with life rather than against it — to find freedom inside instability." },
+  6:{ theme:"The Nurturer", body:"Love and responsibility. This cycle asks you to show up for others — family, community, home. You are learning that care given freely is never wasted." },
+  7:{ theme:"The Seeker", body:"Solitude, study, and inner truth. This cycle asks you to go deep rather than wide. You are learning to trust what you cannot see or prove." },
+  8:{ theme:"The Achiever", body:"Power, material mastery, and leadership. This cycle asks you to step up in the world. You are learning that ambition in service of something greater transforms everything." },
+  9:{ theme:"The Humanitarian", body:"Completion and release. This cycle asks you to give back, let go, and serve something larger than yourself. You are learning the freedom that comes from truly releasing the past." },
+  11:{ theme:"The Visionary", body:"A master cycle of heightened sensitivity and inspiration. You are being shaped into a channel for higher ideas. Trust your intuition above all else in this period." },
+  22:{ theme:"The Architect", body:"A master cycle of building at scale. You are being prepared to create something that outlasts you. Think bigger than feels comfortable." },
+  33:{ theme:"The Healer", body:"A master cycle of unconditional love and teaching. Your life itself becomes the lesson. You are learning to embody compassion without losing yourself." },
+};
+
+function getCycleMeaning(n) {
+  return CYCLE_MEANINGS[n] || { theme:`Cycle ${n}`, body:"A rare and powerful cycle energy — your journey through this chapter is uniquely your own." };
+}
+
 // ── Compatibility data ─────────────────────────────────────────────────────────
 
 const COMPAT = {
@@ -843,10 +893,11 @@ export default function NumerologyCalculator() {
     const missing = missingNumbers(name);
     const sign = getSunSign(dob);
     const pc = getPinnaclesAndChallenges(dob);
+    const cycles = getLifePathCycles(dob);
     const karmicDebts = [];
     if (lpK.karmic) karmicDebts.push({debt:lpK.karmic,source:"Life Path"});
     if (exK.karmic) karmicDebts.push({debt:exK.karmic,source:"Expression"});
-    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing,sign,pc});
+    setResults({lp:lpK.value,ex:exK.value,su,pe,bd,py,karmicDebts,missing,sign,pc,cycles});
     setOpenCards({});
     setOpenMissing(null);
   }
@@ -1052,6 +1103,46 @@ export default function NumerologyCalculator() {
                                   <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2rem",color:"#e07080",lineHeight:1}}>{challenges[i].num}</div>
                                   <div style={{fontSize:"0.75rem",color:"#e8b0b8",marginTop:"0.2rem"}}>{cm.theme}</div>
                                   <div style={{fontSize:"0.72rem",color:"#d4a8b0",lineHeight:1.6,marginTop:"0.4rem",fontStyle:"italic"}}>{cm.body}</div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
+
+                {/* Life Path Cycles */}
+                {results.cycles && (()=>{
+                  const {cycles, current} = results.cycles;
+                  return (
+                    <>
+                      <div className="divider"><span>Life Path Cycles</span></div>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.75rem",marginBottom:"1rem"}}>
+                        {cycles.map((c,i)=>{
+                          const cm = getCycleMeaning(c.num);
+                          const isCurrent = i === current;
+                          return (
+                            <div key={i} style={{
+                              background: isCurrent ? "rgba(155,135,200,0.08)" : "var(--surface2)",
+                              border: isCurrent ? "1px solid rgba(155,135,200,0.4)" : "1px solid var(--border)",
+                              borderRadius:12, padding:"1.1rem",
+                            }}>
+                              {isCurrent && (
+                                <div style={{fontSize:"0.62rem",color:"var(--violet)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>
+                                  ✦ Your current cycle
+                                </div>
+                              )}
+                              <div style={{display:"flex",gap:"1rem",alignItems:"flex-start"}}>
+                                <div style={{minWidth:52}}>
+                                  <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2.5rem",color: isCurrent ? "var(--violet)" : "var(--gold)",lineHeight:1}}>{c.num}</div>
+                                  <div style={{fontSize:"0.58rem",color:"var(--text-dim)",letterSpacing:"0.08em",textTransform:"uppercase",marginTop:"0.2rem"}}>{c.source}</div>
+                                </div>
+                                <div style={{flex:1}}>
+                                  <div style={{fontSize:"0.6rem",color:"var(--text-dim)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.15rem"}}>{c.label} · Ages {c.ages}</div>
+                                  <div style={{fontSize:"0.82rem",color: isCurrent ? "var(--violet)" : "var(--gold)",marginBottom:"0.35rem",fontWeight:500}}>{cm.theme}</div>
+                                  <div style={{fontSize:"0.76rem",color:"#c4bdd8",lineHeight:1.65,fontStyle:"italic"}}>{cm.body}</div>
                                 </div>
                               </div>
                             </div>
