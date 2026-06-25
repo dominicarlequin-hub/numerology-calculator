@@ -335,7 +335,6 @@ const SIGNS = {
 
 const ELEMENT_COLORS = { Fire:"#e8855a", Earth:"#a08060", Air:"#9bc4e8", Water:"#7ba8c4" };
 
-// How each sign element interacts with each Life Path number
 const SIGN_LP_COMBOS = {
   "Fire-1":   "Two forces of initiation collide. Your will to lead is supercharged — almost electric. Channel it or burn out.",
   "Fire-3":   "Pure creative combustion. Expression meets passion — you were made to perform, create, inspire.",
@@ -378,7 +377,6 @@ const SIGN_LP_COMBOS = {
 function getSignLPReading(sign, lp) {
   const el = SIGNS[sign]?.element;
   if (!el) return null;
-  // Try exact key, then reduce master numbers to single digit for lookup
   const reduced = lp > 9 ? String(lp).split("").reduce((a,d)=>a+Number(d),0) : lp;
   return SIGN_LP_COMBOS[`${el}-${lp}`] || SIGN_LP_COMBOS[`${el}-${reduced}`] || `${sign} and Life Path ${lp} — ${el} energy meeting the vibration of ${lp}. A rare and potent combination.`;
 }
@@ -437,7 +435,6 @@ const MISSING_MEANINGS = {
   9:{shadow:"Difficulty with compassion, completion, or the big picture",lesson:"You are learning that all things end, and in that ending is grace — you are here to give, forgive, and release."},
 };
 
-
 // ── Pinnacles & Challenges ────────────────────────────────────────────────────
 
 function getPinnaclesAndChallenges(dob) {
@@ -453,7 +450,6 @@ function getPinnaclesAndChallenges(dob) {
   const lp = reduce(m + d + y);
   const age = new Date().getFullYear() - year;
 
-  // Pinnacle ages
   const p1end = 36 - lp;
   const p2end = p1end + 9;
   const p3end = p2end + 9;
@@ -520,7 +516,6 @@ function getPinnacleMeaning(n) {
 function getChallengeMeaning(n) {
   return CHALLENGE_MEANINGS[n] || { theme:`Lesson ${n}`, body:"A rare challenge vibration — your lesson here is deeply personal and powerfully transformative." };
 }
-
 
 // ── Life Path Cycles ──────────────────────────────────────────────────────────
 
@@ -692,7 +687,6 @@ function TreeOfLife({ activeNums }) {
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"1.25rem"}}>
       <svg viewBox="0 0 400 570" width="100%" style={{maxWidth:300,display:"block"}}>
-        {/* Paths */}
         {PATHS.map(([a,b],i)=>{
           const sa = SEPHIROTH.find(s=>s.id===a);
           const sb = SEPHIROTH.find(s=>s.id===b);
@@ -704,18 +698,13 @@ function TreeOfLife({ activeNums }) {
             />
           );
         })}
-
-        {/* Nodes */}
         {SEPHIROTH.map(s=>{
           const isActive = activeSephIds.has(s.id);
           const isSel = selected===s.id;
           return (
-            <g key={s.id} style={{cursor:"pointer"}}
-              onClick={()=>setSelected(isSel?null:s.id)}
-            >
+            <g key={s.id} style={{cursor:"pointer"}} onClick={()=>setSelected(isSel?null:s.id)}>
               {isActive && (
-                <circle cx={s.x} cy={s.y} r={24} fill="none"
-                  stroke={s.color} strokeWidth={1} opacity={0.3}/>
+                <circle cx={s.x} cy={s.y} r={24} fill="none" stroke={s.color} strokeWidth={1} opacity={0.3}/>
               )}
               <circle cx={s.x} cy={s.y} r={16}
                 fill={isSel ? `${s.color}33` : isActive ? `${s.color}18` : "rgba(17,17,24,0.95)"}
@@ -735,26 +724,16 @@ function TreeOfLife({ activeNums }) {
         })}
       </svg>
 
-      {/* Detail panel */}
       {sel && (
         <div style={{width:"100%",maxWidth:380,background:"#0e0e15",border:`1px solid ${sel.color}44`,borderRadius:14,padding:"1.25rem",borderLeft:`3px solid ${sel.color}`}}>
-          {/* Sephirah info */}
           <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.2rem"}}>Sephirah {sel.num}</div>
           <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.6rem",color:sel.color,lineHeight:1.1}}>{sel.name}</div>
           <div style={{fontSize:"0.72rem",color:"rgba(155,135,200,0.8)",marginBottom:"0.6rem"}}>{sel.title}</div>
           <div style={{fontSize:"0.82rem",color:"#c4bdd8",lineHeight:1.65,fontStyle:"italic",marginBottom:"1rem"}}>{sel.desc}</div>
-
-          {/* Major Arcana */}
-          <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.6rem"}}>
-            ✦ Major Arcana
-          </div>
+          <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.6rem"}}>✦ Major Arcana</div>
           <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap",marginBottom:"1rem"}}>
-            {sel.tarot.map((card,i)=>(
-              <TarotCard key={i} card={card} color={sel.color}/>
-            ))}
+            {sel.tarot.map((card,i)=>(<TarotCard key={i} card={card} color={sel.color}/>))}
           </div>
-
-          {/* Court Cards */}
           {sel.court && (
             <>
               <div style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(136,128,160,0.6)",marginBottom:"0.5rem"}}>
@@ -766,7 +745,6 @@ function TreeOfLife({ activeNums }) {
               </div>
             </>
           )}
-
           {activeSephIds.has(sel.id) && (
             <div style={{marginTop:"0.85rem",fontSize:"0.7rem",color:sel.color,letterSpacing:"0.06em",borderTop:`1px solid ${sel.color}33`,paddingTop:"0.6rem"}}>
               ✦ This Sephirah is active in your personal chart
@@ -780,7 +758,6 @@ function TreeOfLife({ activeNums }) {
           Calculate your numbers first, then return here to illuminate your Tree and reveal your Tarot correspondences.
         </p>
       )}
-
       {activeSephIds.size > 0 && !selected && (
         <p style={{fontSize:"0.75rem",color:"rgba(136,128,160,0.55)",textAlign:"center"}}>
           Tap a glowing node to reveal its Tarot cards
@@ -883,6 +860,50 @@ export default function NumerologyCalculator() {
   const [p2dob, setP2dob] = useState("");
   const [compat, setCompat] = useState(null);
 
+  // ── SAVED READINGS ──────────────────────────────────────────────────────────
+  const [savedReadings, setSavedReadings] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("numerology_saved") || "[]");
+    } catch { return []; }
+  });
+
+  function saveReading() {
+    if (!results || !name) return;
+    const entry = {
+      id: Date.now(),
+      name,
+      dob,
+      savedAt: new Date().toLocaleDateString(),
+      numbers: {
+        lp: results.lp,
+        ex: results.ex,
+        su: results.su,
+        pe: results.pe,
+        bd: results.bd,
+      },
+      fullResults: results,
+    };
+    const updated = [entry, ...savedReadings];
+    setSavedReadings(updated);
+    localStorage.setItem("numerology_saved", JSON.stringify(updated));
+  }
+
+  function deleteReading(id) {
+    const updated = savedReadings.filter(r => r.id !== id);
+    setSavedReadings(updated);
+    localStorage.setItem("numerology_saved", JSON.stringify(updated));
+  }
+
+  function loadReading(entry) {
+    setName(entry.name);
+    setDob(entry.dob);
+    setResults(entry.fullResults);
+    setOpenCards({});
+    setOpenMissing(null);
+    setTab("calculator");
+  }
+  // ───────────────────────────────────────────────────────────────────────────
+
   function calculate() {
     const lpK = lifePathWithKarma(dob);
     const exK = expressionWithKarma(name);
@@ -947,6 +968,9 @@ export default function NumerologyCalculator() {
           <button className={`tab ${tab==="calculator"?"active":""}`} onClick={()=>setTab("calculator")}>Calculator</button>
           <button className={`tab ${tab==="tree"?"active":""}`} onClick={()=>setTab("tree")}>Tree of Life</button>
           <button className={`tab ${tab==="compatibility"?"active":""}`} onClick={()=>setTab("compatibility")}>Compatibility</button>
+          <button className={`tab ${tab==="saved"?"active":""}`} onClick={()=>setTab("saved")}>
+            Saved {savedReadings.length > 0 && `(${savedReadings.length})`}
+          </button>
         </div>
 
         {/* ── CALCULATOR ── */}
@@ -966,6 +990,14 @@ export default function NumerologyCalculator() {
 
             {results && (
               <>
+                <button
+                  className="btn"
+                  onClick={saveReading}
+                  style={{marginBottom:"1rem",background:"linear-gradient(135deg,rgba(155,135,200,.18),rgba(201,169,110,.1))",borderColor:"var(--violet)",color:"var(--violet)"}}
+                >
+                  ✦ Save This Reading
+                </button>
+
                 <div className="divider"><span>Your Numerology Profile</span></div>
                 <div className="results-grid">
                   {numCards.map(({key,label,value})=>{
@@ -1042,7 +1074,6 @@ export default function NumerologyCalculator() {
                   </>
                 )}
 
-                {/* Astrology */}
                 {results.sign && SIGNS[results.sign] && (()=>{
                   const s = SIGNS[results.sign];
                   const ec = ELEMENT_COLORS[s.element];
@@ -1067,7 +1098,6 @@ export default function NumerologyCalculator() {
                   );
                 })()}
 
-                {/* Pinnacles & Challenges */}
                 {results.pc && (()=>{
                   const {pinnacles, challenges, current} = results.pc;
                   return (
@@ -1085,19 +1115,15 @@ export default function NumerologyCalculator() {
                               borderRadius:12, padding:"1.1rem",
                             }}>
                               {isCurrent && (
-                                <div style={{fontSize:"0.62rem",color:"var(--gold)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>
-                                  ✦ You are here
-                                </div>
+                                <div style={{fontSize:"0.62rem",color:"var(--gold)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>✦ You are here</div>
                               )}
                               <div style={{display:"flex",gap:"0.75rem",alignItems:"flex-start"}}>
-                                {/* Pinnacle */}
                                 <div style={{flex:1,borderRight:"1px solid var(--border)",paddingRight:"0.75rem"}}>
                                   <div style={{fontSize:"0.6rem",color:"var(--text-dim)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Pinnacle {i+1} · {p.ages}</div>
                                   <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2rem",color:"var(--gold)",lineHeight:1}}>{p.num}</div>
                                   <div style={{fontSize:"0.75rem",color:"var(--violet)",marginTop:"0.2rem"}}>{pm.theme}</div>
                                   <div style={{fontSize:"0.72rem",color:"#c4bdd8",lineHeight:1.6,marginTop:"0.4rem",fontStyle:"italic"}}>{pm.body}</div>
                                 </div>
-                                {/* Challenge */}
                                 <div style={{flex:1,paddingLeft:"0.25rem"}}>
                                   <div style={{fontSize:"0.6rem",color:"#e07080",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Challenge · {challenges[i].ages}</div>
                                   <div style={{fontFamily:"Cormorant Garamond,serif",fontSize:"2rem",color:"#e07080",lineHeight:1}}>{challenges[i].num}</div>
@@ -1113,7 +1139,6 @@ export default function NumerologyCalculator() {
                   );
                 })()}
 
-                {/* Life Path Cycles */}
                 {results.cycles && (()=>{
                   const {cycles, current} = results.cycles;
                   return (
@@ -1130,9 +1155,7 @@ export default function NumerologyCalculator() {
                               borderRadius:12, padding:"1.1rem",
                             }}>
                               {isCurrent && (
-                                <div style={{fontSize:"0.62rem",color:"var(--violet)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>
-                                  ✦ Your current cycle
-                                </div>
+                                <div style={{fontSize:"0.62rem",color:"var(--violet)",letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:"0.4rem"}}>✦ Your current cycle</div>
                               )}
                               <div style={{display:"flex",gap:"1rem",alignItems:"flex-start"}}>
                                 <div style={{minWidth:52}}>
@@ -1186,6 +1209,47 @@ export default function NumerologyCalculator() {
             <div className="card">
               <TreeOfLife activeNums={activeNums}/>
             </div>
+          </>
+        )}
+
+        {/* ── SAVED READINGS ── */}
+        {tab==="saved" && (
+          <>
+            {savedReadings.length === 0 ? (
+              <div className="empty">
+                <div style={{fontSize:"2rem",marginBottom:"1rem",opacity:0.4}}>🜃</div>
+                <p>No saved readings yet.<br/>Calculate someone's numbers and tap Save.</p>
+              </div>
+            ) : (
+              savedReadings.map(entry => (
+                <div key={entry.id} className="card" style={{marginBottom:"1rem"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"0.75rem"}}>
+                    <div>
+                      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",color:"var(--gold)"}}>{entry.name}</div>
+                      <div style={{fontSize:"0.68rem",color:"var(--text-dim)",letterSpacing:"0.08em",marginTop:"0.2rem"}}>Saved {entry.savedAt}</div>
+                    </div>
+                    <button onClick={()=>deleteReading(entry.id)} style={{background:"none",border:"none",color:"rgba(220,100,110,0.5)",cursor:"pointer",fontSize:"1rem",padding:"0.25rem"}}>✕</button>
+                  </div>
+                  <div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap",marginBottom:"1rem"}}>
+                    {[
+                      {label:"LP", value: entry.numbers.lp},
+                      {label:"EX", value: entry.numbers.ex},
+                      {label:"SU", value: entry.numbers.su},
+                      {label:"PE", value: entry.numbers.pe},
+                      {label:"BD", value: entry.numbers.bd},
+                    ].filter(n=>n.value).map(({label,value})=>(
+                      <div key={label} style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:8,padding:"0.4rem 0.65rem",textAlign:"center",minWidth:48}}>
+                        <div style={{fontSize:"0.6rem",color:"var(--text-dim)",letterSpacing:"0.08em",textTransform:"uppercase"}}>{label}</div>
+                        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",color:[11,22,33].includes(value)?"var(--master)":"var(--gold)",lineHeight:1}}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="btn" onClick={()=>loadReading(entry)} style={{fontSize:"0.75rem",padding:"0.6rem"}}>
+                    Load Reading
+                  </button>
+                </div>
+              ))
+            )}
           </>
         )}
 
