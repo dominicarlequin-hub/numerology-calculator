@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ── Letter map & constants ─────────────────────────────────────────────────────
 
@@ -672,7 +672,102 @@ function CourtColumn({ title, cards, color }) {
   );
 }
 
+// ── Date entry ─────────────────────────────────────────────────────────────────
+
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// "1990-05-14" -> {m:"5", d:"14", y:"1990"}; anything else -> empty parts
+function splitDate(value) {
+  const match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(value || "");
+  return match
+    ? { m: String(Number(match[2])), d: String(Number(match[3])), y: match[1] }
+    : { m: "", d: "", y: "" };
+}
+
+// Only produces YYYY-MM-DD once all three parts are filled, otherwise ""
+function joinDate({ m, d, y }) {
+  if (!m || !d || y.length !== 4) return "";
+  return `${y}-${m.padStart(2,"0")}-${d.padStart(2,"0")}`;
+}
+
+// The parent keeps a plain YYYY-MM-DD string; the in-progress parts live here
+// because a half-typed date can't be represented in that string.
+function DateField({ value, onChange, label = "Date of birth" }) {
+  const [parts, setParts] = useState(() => splitDate(value));
+
+  // Re-decompose when the value is changed from outside (e.g. loading a saved reading)
+  useEffect(() => {
+    if (value !== joinDate(parts)) setParts(splitDate(value));
+  }, [value]);
+
+  function update(key, raw) {
+    const next = { ...parts, [key]: raw };
+    setParts(next);
+    onChange(joinDate(next));
+  }
+
+  return (
+    <div className="date-row" role="group" aria-label={label}>
+      <select aria-label="Month" value={parts.m} onChange={e=>update("m", e.target.value)}>
+        <option value="">Month</option>
+        {MONTH_NAMES.map((name,i)=>(<option key={name} value={String(i+1)}>{name}</option>))}
+      </select>
+      <input
+        inputMode="numeric" placeholder="Day" aria-label="Day" value={parts.d}
+        onChange={e=>update("d", e.target.value.replace(/\D/g,"").slice(0,2))}
+      />
+      <input
+        inputMode="numeric" placeholder="Year" aria-label="Year" value={parts.y}
+        onChange={e=>update("y", e.target.value.replace(/\D/g,"").slice(0,4))}
+      />
+    </div>
+  );
+}
+
+// ── Header mark ────────────────────────────────────────────────────────────────
+
+function TetrahedronMark() {
+  return (
+    <svg className="header-mark" viewBox="0 0 64 64" width="58" height="58" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="tetraFaceL" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#c9a96e" stopOpacity="0.30"/>
+          <stop offset="100%" stopColor="#c9a96e" stopOpacity="0.04"/>
+        </linearGradient>
+        <linearGradient id="tetraFaceR" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#9b87c8" stopOpacity="0.26"/>
+          <stop offset="100%" stopColor="#9b87c8" stopOpacity="0.03"/>
+        </linearGradient>
+      </defs>
+      <polygon points="32,3 5,54 37,44" fill="url(#tetraFaceL)"/>
+      <polygon points="32,3 37,44 60,50" fill="url(#tetraFaceR)"/>
+      <polygon points="32,3 5,54 60,50" fill="none" stroke="#c9a96e" strokeWidth="1.6" strokeLinejoin="round"/>
+      <path d="M32 3 L37 44 M5 54 L37 44 M60 50 L37 44" stroke="#c9a96e" strokeWidth="1" strokeLinecap="round" opacity="0.65"/>
+      <circle cx="32" cy="3" r="2.4" fill="#c9a96e"/>
+      <circle cx="5" cy="54" r="2.4" fill="#c9a96e"/>
+      <circle cx="60" cy="50" r="2.4" fill="#c9a96e"/>
+      <circle cx="37" cy="44" r="2" fill="#9b87c8"/>
+    </svg>
+  );
+}
+
+// Outline-only variant for the empty Saved tab
+function TetrahedronOutline() {
+  return (
+    <svg viewBox="0 0 64 64" width="44" height="44" fill="none" aria-hidden="true" style={{display:"block",margin:"0 auto 1rem",opacity:0.6}}>
+      <polygon points="32,3 5,54 60,50" fill="none" stroke="#c9a96e" strokeWidth="1.8" strokeLinejoin="round"/>
+      <path d="M32 3 L37 44 M5 54 L37 44 M60 50 L37 44" stroke="#c9a96e" strokeWidth="1.2" strokeLinecap="round" opacity="0.6"/>
+    </svg>
+  );
+}
+
 // ── Tree of Life SVG Component ─────────────────────────────────────────────────
+
+const PILLARS = [
+  { x:80,  y1:70, y2:480, label:"SEVERITY", color:"#c96e6e" },
+  { x:200, y1:10, y2:552, label:"BALANCE",  color:"#c9a96e" },
+  { x:320, y1:70, y2:480, label:"MERCY",    color:"#6ea8c9" },
+];
 
 function TreeOfLife({ activeNums }) {
   const [selected, setSelected] = useState(null);
@@ -686,7 +781,30 @@ function TreeOfLife({ activeNums }) {
 
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"1.25rem"}}>
-      <svg viewBox="0 0 400 570" width="100%" style={{maxWidth:300,display:"block"}}>
+      <svg viewBox="-20 -14 440 620" width="100%" style={{maxWidth:460,display:"block"}}>
+        <defs>
+          <radialGradient id="treeAura" cx="50%" cy="46%" r="52%">
+            <stop offset="0%" stopColor="#9b87c8" stopOpacity="0.16"/>
+            <stop offset="60%" stopColor="#9b87c8" stopOpacity="0.05"/>
+            <stop offset="100%" stopColor="#9b87c8" stopOpacity="0"/>
+          </radialGradient>
+          {/* userSpaceOnUse: a perfectly vertical line has a zero-width bounding box, so an
+              objectBoundingBox gradient would paint nothing */}
+          <linearGradient id="pillarFade" gradientUnits="userSpaceOnUse" x1="0" y1="10" x2="0" y2="552">
+            <stop offset="0%" stopColor="rgba(160,140,200,0.14)"/>
+            <stop offset="50%" stopColor="rgba(160,140,200,0.05)"/>
+            <stop offset="100%" stopColor="rgba(160,140,200,0.14)"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="200" cy="285" rx="250" ry="330" fill="url(#treeAura)"/>
+        {PILLARS.map(p=>(
+          <g key={p.label}>
+            <line x1={p.x} y1={p.y1} x2={p.x} y2={p.y2} stroke="url(#pillarFade)" strokeWidth={1}/>
+            <text x={p.x} y={600} textAnchor="middle" fontSize="13" fontFamily="Inter, sans-serif" letterSpacing="1.6" fill={p.color}>{p.label}</text>
+          </g>
+        ))}
+        <circle cx="200" cy="180" r="13" fill="none" stroke="rgba(160,140,200,0.22)" strokeWidth={1} strokeDasharray="3 3"/>
+        <text x="200" y="183" textAnchor="middle" fontSize="10" fontFamily="Inter, sans-serif" fill="#8880a0">DA'ATH</text>
         {PATHS.map(([a,b],i)=>{
           const sa = SEPHIROTH.find(s=>s.id===a);
           const sb = SEPHIROTH.find(s=>s.id===b);
@@ -702,23 +820,37 @@ function TreeOfLife({ activeNums }) {
           const isActive = activeSephIds.has(s.id);
           const isSel = selected===s.id;
           return (
-            <g key={s.id} style={{cursor:"pointer"}} onClick={()=>setSelected(isSel?null:s.id)}>
+            <g key={s.id}
+              style={{
+                cursor:"pointer",
+                filter: isActive ? `drop-shadow(0 0 ${isSel?14:8}px ${s.color}${isSel?"cc":"88"})` : "none",
+                transition:"filter .3s",
+              }}
+              onClick={()=>setSelected(isSel?null:s.id)}
+            >
               {isActive && (
-                <circle cx={s.x} cy={s.y} r={24} fill="none" stroke={s.color} strokeWidth={1} opacity={0.3}/>
+                <>
+                  <circle cx={s.x} cy={s.y} r={isSel?40:32} fill={s.color} opacity={isSel?0.22:0.12}/>
+                  <circle cx={s.x} cy={s.y} r={24} fill="none" stroke={s.color} strokeWidth={1} opacity={isSel?0.5:0.3}/>
+                </>
               )}
-              <circle cx={s.x} cy={s.y} r={16}
-                fill={isSel ? `${s.color}33` : isActive ? `${s.color}18` : "rgba(17,17,24,0.95)"}
+              <circle cx={s.x} cy={s.y} r={isSel?19:16}
+                fill={isSel ? `${s.color}3a` : isActive ? `${s.color}1c` : "rgba(17,17,24,0.95)"}
                 stroke={isSel ? s.color : isActive ? s.color : "rgba(160,140,200,0.18)"}
-                strokeWidth={isSel ? 2 : isActive ? 1.5 : 1}
+                strokeWidth={isSel ? 2.5 : isActive ? 1.5 : 1}
               />
               <text x={s.x} y={s.y+1} textAnchor="middle" dominantBaseline="middle"
-                fontSize="10" fontFamily="Cormorant Garamond, serif" fontWeight={isActive?"600":"400"}
-                fill={isActive ? s.color : "rgba(136,128,160,0.55)"}
+                fontSize="15" fontFamily="Cormorant Garamond, serif" fontWeight={isActive?"600":"400"}
+                fill={isActive ? s.color : "#9a92b0"}
               >{s.num}</text>
-              <text x={s.x} y={s.y+28} textAnchor="middle" fontSize="7"
-                fontFamily="Inter, sans-serif"
-                fill={isActive ? "rgba(232,228,240,0.8)" : "rgba(136,128,160,0.4)"}
+              <text x={s.x} y={s.y+31} textAnchor="middle" fontSize="13"
+                fontFamily="Cormorant Garamond, serif"
+                fill={isActive ? "#e8e4f0" : "#a9a2bd"}
               >{s.name}</text>
+              <text x={s.x} y={s.y+44} textAnchor="middle" fontSize="10"
+                fontFamily="Inter, sans-serif" letterSpacing="0.4"
+                fill={isActive ? s.color : "#9a92b0"}
+              >{s.title}</text>
             </g>
           );
         })}
@@ -781,20 +913,28 @@ const styles = `
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
   .app{max-width:720px;margin:0 auto;padding:2rem 1.25rem 4rem;}
   .header{text-align:center;margin-bottom:3rem;}
-  .header-eye{font-size:2.2rem;margin-bottom:.75rem;opacity:.85;}
+  .header-mark{display:block;margin:0 auto .85rem;overflow:visible;}
   .header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3.2rem);font-weight:300;letter-spacing:.08em;color:var(--gold);line-height:1.1;}
   .header p{font-size:.85rem;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase;margin-top:.5rem;}
-  .tabs{display:flex;gap:.2rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.25rem;margin-bottom:2rem;flex-wrap:wrap;}
-  .tab{flex:1;min-width:70px;padding:.55rem .3rem;font-size:.68rem;font-family:'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;background:none;border:none;color:var(--text-dim);cursor:pointer;border-radius:7px;transition:all .2s;white-space:nowrap;}
-  .tab.active{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,169,110,0.3);}
-  .tab:hover:not(.active){color:var(--text);}
+  .tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.4rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.35rem;margin-bottom:2rem;}
+  .tab{padding:.6rem .4rem;font-size:.68rem;font-family:'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;border-radius:7px;transition:all .2s;white-space:nowrap;}
+  .tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,169,110,0.45);}
+  .tab:hover,.tab:focus-visible{filter:brightness(1.2);}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:1.25rem;}
   .field{margin-bottom:1.25rem;}
   .field label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.45rem;}
-  .field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.95rem;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
-  .field input:focus{border-color:var(--violet);}
+  .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.95rem;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+  .field input:focus,.field select:focus{border-color:var(--violet);}
+  .date-row{display:grid;grid-template-columns:1.4fr .8fr 1fr;gap:.5rem;}
+  .date-row>*{min-width:0;padding:.75rem .7rem;}
+  .field select{cursor:pointer;appearance:none;padding-right:1.8rem;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%238880a0' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right .7rem center;}
+  .field select option{background:var(--surface2);color:var(--text);}
   .btn{width:100%;padding:.85rem;background:linear-gradient(135deg,rgba(201,169,110,.18),rgba(155,135,200,.18));border:1px solid var(--gold);border-radius:9px;color:var(--gold);font-family:'Inter',sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-  .btn:hover{background:linear-gradient(135deg,rgba(201,169,110,.28),rgba(155,135,200,.28));box-shadow:0 0 20px rgba(201,169,110,.15);}
+  .btn:hover,.btn:focus-visible{background:linear-gradient(135deg,rgba(201,169,110,.28),rgba(155,135,200,.28));box-shadow:0 0 20px rgba(201,169,110,.15);}
+  .btn.btn-save{background:linear-gradient(135deg,rgba(155,135,200,.18),rgba(201,169,110,.1));border-color:var(--violet);color:var(--violet);}
+  .btn.btn-save:hover,.btn.btn-save:focus-visible{background:linear-gradient(135deg,rgba(155,135,200,.28),rgba(201,169,110,.18));box-shadow:0 0 20px rgba(155,135,200,.15);}
+  .del-btn{background:none;border:none;color:rgba(220,100,110,.5);cursor:pointer;font-size:1rem;padding:.25rem;transition:color .2s;}
+  .del-btn:hover,.del-btn:focus-visible{color:rgba(220,100,110,.9);}
   .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
   @media(max-width:480px){.results-grid{grid-template-columns:1fr;}}
   .num-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all .2s;}
@@ -959,7 +1099,7 @@ export default function NumerologyCalculator() {
       <div className="app">
 
         <div className="header">
-          <div className="header-eye">🜃</div>
+          <TetrahedronMark/>
           <h1>Numerology</h1>
           <p>Decode the language of your soul</p>
         </div>
@@ -983,7 +1123,7 @@ export default function NumerologyCalculator() {
               </div>
               <div className="field">
                 <label>Date of Birth</label>
-                <input type="date" value={dob} onChange={e=>setDob(e.target.value)}/>
+                <DateField value={dob} onChange={setDob}/>
               </div>
               <button className="btn" onClick={calculate}>Reveal My Numbers</button>
             </div>
@@ -991,9 +1131,9 @@ export default function NumerologyCalculator() {
             {results && (
               <>
                 <button
-                  className="btn"
+                  className="btn btn-save"
                   onClick={saveReading}
-                  style={{marginBottom:"1rem",background:"linear-gradient(135deg,rgba(155,135,200,.18),rgba(201,169,110,.1))",borderColor:"var(--violet)",color:"var(--violet)"}}
+                  style={{marginBottom:"1rem"}}
                 >
                   ✦ Save This Reading
                 </button>
@@ -1196,7 +1336,7 @@ export default function NumerologyCalculator() {
                 </div>
                 <div className="field">
                   <label>Date of Birth</label>
-                  <input type="date" value={dob} onChange={e=>setDob(e.target.value)}/>
+                  <DateField value={dob} onChange={setDob}/>
                 </div>
                 <button className="btn" onClick={calculate}>Illuminate My Tree</button>
               </div>
@@ -1206,7 +1346,7 @@ export default function NumerologyCalculator() {
                 Glowing nodes are active in your chart. Tap any node to reveal its meaning and Tarot cards.
               </p>
             )}
-            <div className="card">
+            <div className="card" style={{padding:"1.75rem 1.25rem"}}>
               <TreeOfLife activeNums={activeNums}/>
             </div>
           </>
@@ -1217,7 +1357,7 @@ export default function NumerologyCalculator() {
           <>
             {savedReadings.length === 0 ? (
               <div className="empty">
-                <div style={{fontSize:"2rem",marginBottom:"1rem",opacity:0.4}}>🜃</div>
+                <TetrahedronOutline/>
                 <p>No saved readings yet.<br/>Calculate someone's numbers and tap Save.</p>
               </div>
             ) : (
@@ -1228,7 +1368,7 @@ export default function NumerologyCalculator() {
                       <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",color:"var(--gold)"}}>{entry.name}</div>
                       <div style={{fontSize:"0.68rem",color:"var(--text-dim)",letterSpacing:"0.08em",marginTop:"0.2rem"}}>Saved {entry.savedAt}</div>
                     </div>
-                    <button onClick={()=>deleteReading(entry.id)} style={{background:"none",border:"none",color:"rgba(220,100,110,0.5)",cursor:"pointer",fontSize:"1rem",padding:"0.25rem"}}>✕</button>
+                    <button className="del-btn" onClick={()=>deleteReading(entry.id)}>✕</button>
                   </div>
                   <div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap",marginBottom:"1rem"}}>
                     {[
@@ -1265,7 +1405,7 @@ export default function NumerologyCalculator() {
                 </div>
                 <div className="field">
                   <label>Date of Birth</label>
-                  <input type="date" value={p1dob} onChange={e=>setP1dob(e.target.value)}/>
+                  <DateField value={p1dob} onChange={setP1dob} label="Person 1 date of birth"/>
                 </div>
               </div>
               <div className="person-block">
@@ -1276,7 +1416,7 @@ export default function NumerologyCalculator() {
                 </div>
                 <div className="field">
                   <label>Date of Birth</label>
-                  <input type="date" value={p2dob} onChange={e=>setP2dob(e.target.value)}/>
+                  <DateField value={p2dob} onChange={setP2dob} label="Person 2 date of birth"/>
                 </div>
               </div>
               <button className="btn" onClick={calculateCompat}>Read Our Compatibility</button>
